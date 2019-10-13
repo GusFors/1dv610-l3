@@ -1,12 +1,48 @@
 <?php
 
-class DateTimeView {
+class DateTimeView
+{
 
 
-	public function show() {
+	public function getWeekDay()
+	{
+		return date('l');
+	}
 
-		$timeString = 'TODO, Write servertime here...';
+	public function getDateDay()
+	{
+		return date('d');
+	}
 
-		return '<p>' . $timeString . '</p>';
+	public function getMonth()
+	{
+		return date('F');
+	}
+
+	public function getYear()
+	{
+		return date('Y');
+	}
+
+	public function getHour()
+	{
+		return date('G');
+	}
+
+	public function getMinute()
+	{
+		return date('i');
+	}
+
+	public function getSecond()
+	{
+		return date('s');
+	}
+
+	public function show()
+	{
+		date_default_timezone_set('Europe/Stockholm');
+		$timeString = '';
+		return '<p>' . $timeString . $this->getWeekDay() . ', the ' . $this->getDateDay() . 'th of ' . $this->getMonth() . ' ' . $this->getYear() . ', The time is ' . $this->getHour() . ':' . $this->getMinute() . ':' . $this->getSecond() . '</p>';
 	}
 }
