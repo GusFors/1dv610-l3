@@ -19,7 +19,7 @@ class LayoutView
         
           
           <div class="container">
-              ' . $viewToRender->response($isLoggedIn, $statusMessage) . '
+              ' . $viewToRender->response($statusMessage, $isLoggedIn) . '
               
               ' . $dtv->show() . '
           </div>

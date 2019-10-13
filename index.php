@@ -9,7 +9,7 @@ require_once('Application.php');
 error_reporting(E_ALL);
 ini_set('display_errors', 'On');
 
-session_start();
+
 //CREATE OBJECTS OF THE VIEWS
 $app = new Application();
 $app->run();

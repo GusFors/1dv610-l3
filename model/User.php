@@ -4,15 +4,13 @@ class User
 {
     private $username;
     private $password;
+    const MIN_USERNAME_LENGTH = 3;
+    const MIN_PASSWORD_LENGTH = 6;
 
-    public function __construct($username, $password)
-    {
-        $this->setUsername($username);
-        $this->setPassword($password);
-        $this->checkUserMatch();
-    }
+    public function __construct()
+    { }
 
-    private function setUsername($username)
+    private function setLoginUsername($username)
     {
         if (strlen($username) < 1) {
             throw new Exception('Username is missing', 1);
@@ -20,7 +18,7 @@ class User
         $this->username = $username;
     }
 
-    private function setPassword($password)
+    private function setLoginPassword($password)
     {
         if (strlen($password) < 1) {
             throw new Exception('Password is missing', 1);
@@ -40,5 +38,50 @@ class User
     public function getUsername(): string
     {
         return $this->username;
+    }
+
+    public function loginUser($username, $password)
+    {
+        $this->setLoginUsername($username);
+        $this->setLoginPassword($password);
+        $this->checkUserMatch();
+    }
+
+    public function registerUser($username, $password, $passwordRepeat)
+    {   
+        $errorMessage = '';
+        $isError = false;
+
+        if (strlen($username) < self::MIN_USERNAME_LENGTH) {
+            $errorMessage .= 'Username has too few characters, at least 3 characters.';
+            $isError = true;
+        }
+
+        if (strlen($password) < self::MIN_PASSWORD_LENGTH) {
+            if ($errorMessage !== '') {
+                $errorMessage .= '<br>';
+            }
+            $errorMessage .= 'Password has too few characters, at least 6 characters.';
+            $isError = true;
+        } else {
+            if ($password !== $passwordRepeat) {
+                $errorMessage .= 'Passwords do not match.';
+                $isError = true;
+            }
+        }
+
+        if ($username != strip_tags($username)) {
+            if ($errorMessage !== '') {
+                $errorMessage .= '<br>';
+            }
+            $errorMessage .= 'Username contains invalid characters.';
+            $isError = true;
+            return false;
+        }
+        
+        if($isError) {
+            throw new Exception($errorMessage, 1);
+            
+        }
     }
 }

@@ -18,11 +18,12 @@ class UserSession
         return isset($_SESSION['username']);
     }
 
-    public function tryLogin($username, $password)
+    public function sessionLogin($username, $password)
     {
 
-        $this->currentUser = new User($username, $password);
-    
+        $this->currentUser = new User();
+        $this->currentUser->loginUser($username, $password);
+
         $_SESSION['username'] = $this->currentUser->getUsername();
     }
 
@@ -34,5 +35,19 @@ class UserSession
     public function logoutUser()
     {
         $_SESSION = [];
+    }
+
+    public function isNewLogin()
+    {
+        if (isset($_SESSION['username'])) {
+            return false;
+        }
+        return true;
+    }
+
+    public function tryRegister($username, $password, $passwordRepeat)
+    {
+        $this->currentUser = new User();
+        $this->currentUser->registerUser($username, $password, $passwordRepeat);
     }
 }

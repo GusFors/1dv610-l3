@@ -9,7 +9,7 @@ class RegisterView
     private static $passwordRepeat = 'RegisterView::PasswordRepeat';
     private static $messageId = 'RegisterView::Message';
 
-    public function response($message = '')
+    public function response($message = 'fdec')
     {
        
 
@@ -46,5 +46,39 @@ class RegisterView
         } else {
             return false;
         }
+    }
+
+    public function getRequestUsername() {
+
+        if ($this->checkRequestUserName()) {
+            return $_POST[self::$name];
+        }
+        return null;
+    }
+
+    private function checkRequestUserName() {
+        return isset($_POST[self::$name]);
+    }
+
+    private function checkRequestPassword() {
+        return isset($_POST[self::$password]);
+    }
+
+    public function getRequestPassword() {
+        if ($this->checkRequestPassword()) {
+            return $_POST[self::$password];
+        }
+        return null;
+    }
+
+    public function getRequestPasswordRepeat() {
+        if (isset($_POST[self::$passwordRepeat])) {
+            return $_POST[self::$passwordRepeat];
+        }
+        return null;
+    }
+
+    public function checkRegisterRequest() {
+        return isset($_POST[self::$register]);
     }
 }

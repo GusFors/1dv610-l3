@@ -20,12 +20,10 @@ class LoginView
 	 *
 	 * @return  void BUT writes to standard output and cookies!
 	 */
-	public function response($isLoggedIn, $message)
+	public function response($message, $isLoggedIn)
 	{
 		
-		if ($this->getLoginPost()) { 
-			
-		}
+		
 
 		if ($isLoggedIn) {
 			$response = $this->generateLogoutButtonHTML($message);
@@ -86,7 +84,7 @@ class LoginView
 		//RETURN REQUEST VARIABLE: USERNAME
 	}
 
-	public function getLoginPost()
+	public function isLoginSet() //rename with status?
 	{
 
 		return isset($_POST[self::$login]);
@@ -97,7 +95,7 @@ class LoginView
     }
 
 
-	public function getRequestUserName()
+	public function getRequestUsername()
 	{
 		if (isset($_POST[self::$name])) {
 

@@ -7,11 +7,13 @@ class MainController
     private $registerView;
     private $layoutView;
     private $userSession;
-    
+    private $loginController;
 
 
-    public function __construct($loginView, $dateTimeView, $registerView, $layoutView, $userSession)
+
+    public function __construct($loginView, $dateTimeView, $registerView, $layoutView, $userSession, $loginController)
     {
+        $this->loginController = $loginController;
         $this->loginView = $loginView;
         $this->dateTimeView = $dateTimeView;
         $this->registerView = $registerView;
@@ -24,28 +26,27 @@ class MainController
         $statusMessage = '';
         $isRegister = $this->registerView->checkRegisterStatus();
 
-        if ($this->loginView->getLoginPost()) {
-            $username = $this->loginView->getRequestUserName();
-            $password = $this->loginView->getRequestUserPassword();
+        
+
+        if ($this->registerView->checkRegisterRequest()) {
+            $username = $this->registerView->getRequestUsername();
+            $password = $this->registerView->getRequestPassword();
+            $passwordRepeat = $this->registerView->getRequestPasswordRepeat();
 
             try {
-                $this->userSession->tryLogin($username, $password);
+                $this->userSession->tryRegister($username, $password, $passwordRepeat);
             } catch (Exception $ex) {
                 $statusMessage = $ex->getMessage();
             }
         }
-        if ($this->loginView->getLogoutPost()) {
-            $_SESSION = [];
-        }
 
         $isLoggedIn = $this->userSession->isLoggedIn();
 
-        if ($isLoggedIn) {
-            $this->layoutView->render($isLoggedIn, $this->loginView, $this->dateTimeView, $isRegister, $statusMessage);
-        } else if ($isRegister) {
+        if ($isRegister) {
             $this->layoutView->render($isLoggedIn, $this->registerView, $this->dateTimeView, $isRegister, $statusMessage);
         } else {
-            $this->layoutView->render($isLoggedIn, $this->loginView, $this->dateTimeView, $isRegister, $statusMessage);
+            $this->loginController->doLoginView();
+            //$this->layoutView->render($isLoggedIn, $this->loginView, $this->dateTimeView, $isRegister, $statusMessage);
         }
     }
 }
