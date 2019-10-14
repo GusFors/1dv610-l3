@@ -56,7 +56,7 @@ class UserSession
 
     public function setStoredUsername($name)
     {
-        $_SESSION['storedname'] = $name;
+        $_SESSION['storedname'] = strip_tags($name);
     }
 
     public function getStoredUsername()

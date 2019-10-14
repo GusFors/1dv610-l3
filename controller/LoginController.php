@@ -47,6 +47,7 @@ class LoginController
             $this->loginUser($username, $password);
         } else if ($this->isLogOut()) {
             $this->userSession->logoutUser();
+            $this->userSession->setStatusMessage('Bye bye!');
         }
 
         $isLoggedIn = $this->userSession->isLoggedIn();
