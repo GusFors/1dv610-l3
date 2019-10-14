@@ -42,12 +42,15 @@ class LoginController
             $password = $this->loginView->getRequestUserPassword();
             if ($this->userSession->isNewLogin()) {
                 //$this->statusMessage = 'Welcome';
-                $this->userSession->setStatusMessage('Welcome');
+                $this->userSession->setWelcomeMessage();
             }
             $this->loginUser($username, $password);
         } else if ($this->isLogOut()) {
+            $wasLoggedIn = $this->userSession->isLoggedIn();
             $this->userSession->logoutUser();
-            $this->userSession->setStatusMessage('Bye bye!');
+            if ($wasLoggedIn) {
+                $this->userSession->setByeMessage();
+            }
         }
 
         $isLoggedIn = $this->userSession->isLoggedIn();

@@ -10,6 +10,7 @@ class UserSession
     private $storedName;
     const LOGIN_NAME = 'loginName';
     const STORED_MESSAGE = 'storedMessage';
+    const STORED_NAME = 'storedname';
 
     public function __construct()
     {
@@ -48,22 +49,22 @@ class UserSession
         return true;
     }
 
-    public function tryRegister($username, $password, $passwordRepeat)
+    public function tryRegister($username, $password, $passwordRepeat) // onödig?
     {
-        $this->currentUser = new User();
+        $this->currentUser = new User(); // flytta?
         $this->currentUser->registerUser($username, $password, $passwordRepeat);
     }
 
     public function setStoredUsername($name)
     {
-        $_SESSION['storedname'] = strip_tags($name);
+        $_SESSION[self::STORED_NAME] = strip_tags($name);
     }
 
     public function getStoredUsername()
     {
-        if (isset($_SESSION['storedname'])) {
+        if (isset($_SESSION[self::STORED_NAME])) {
             //return strip_tags($_SESSION['storedname']);
-            return $_SESSION['storedname'];
+            return $_SESSION[self::STORED_NAME];
         }
         return '';
     }
@@ -76,7 +77,15 @@ class UserSession
         $_SESSION[self::STORED_MESSAGE] = $message;
     }
 
-    public function getStatusMessage()
+    public function setWelcomeMessage() {
+        $this->setStatusMessage('Welcome');
+    }
+
+    public function setByeMessage() {
+        $this->setStatusMessage('Bye bye!');
+    }
+
+    public function getStatusMessage(): string
     {
         if (isset($_SESSION[self::STORED_MESSAGE])) {
             $msg = $_SESSION[self::STORED_MESSAGE];
