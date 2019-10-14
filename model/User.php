@@ -15,6 +15,9 @@ class User
         if (strlen($username) < 1) {
             throw new Exception('Username is missing', 1);
         }
+        if ($username != strip_tags($username)) {
+            throw new Exception('Username contains invalid characters.', 1);
+        }
         $this->username = $username;
     }
 
@@ -40,7 +43,7 @@ class User
         return $this->username;
     }
 
-    public function loginUser($username, $password)
+    public function authorizeUser($username, $password)
     {
         $this->setLoginUsername($username);
         $this->setLoginPassword($password);
@@ -76,7 +79,7 @@ class User
             }
             $errorMessage .= 'Username contains invalid characters.';
             $isError = true;
-            return false;
+            
         }
         
         if($isError) {

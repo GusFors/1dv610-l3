@@ -31,7 +31,7 @@ class LoginController
         try {
             $this->userSession->sessionLogin($username, $password);
         } catch (Exception $ex) {
-            $this->statusMessage = $ex->getMessage();
+            $this->userSession->setStatusMessage($ex->getMessage());
         }
     }
 
@@ -41,7 +41,8 @@ class LoginController
             $username = $this->loginView->getRequestUsername();
             $password = $this->loginView->getRequestUserPassword();
             if ($this->userSession->isNewLogin()) {
-                $this->statusMessage = 'Welcome';
+                //$this->statusMessage = 'Welcome';
+                $this->userSession->setStatusMessage('Welcome');
             }
             $this->loginUser($username, $password);
         } else if ($this->isLogOut()) {
@@ -50,9 +51,11 @@ class LoginController
 
         $isLoggedIn = $this->userSession->isLoggedIn();
 
-        if ($isLoggedIn == false) { }
+        if ($isLoggedIn == false) {
+            $this->userSession->setStoredUsername($this->loginView->getRequestUsername());
+        }
 
-        $this->layoutView->render($isLoggedIn, $this->loginView, $this->dateTimeView, false, $this->statusMessage);
+        $this->layoutView->render($isLoggedIn, $this->loginView, false, $this->userSession->getStatusMessage(), $this->userSession->getStoredUsername());
     }
 
     public function logoutUser()

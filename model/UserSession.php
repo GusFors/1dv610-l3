@@ -7,6 +7,9 @@ class UserSession
     private $user;
     private $statusMessage = '';
     private $currentUser;
+    private $storedName;
+    const LOGIN_NAME = 'loginName';
+    const STORED_MESSAGE = 'storedMessage';
 
     public function __construct()
     {
@@ -15,21 +18,21 @@ class UserSession
 
     public function isLoggedIn(): bool
     {
-        return isset($_SESSION['username']);
+        return isset($_SESSION[self::LOGIN_NAME]);
     }
 
     public function sessionLogin($username, $password)
     {
 
         $this->currentUser = new User();
-        $this->currentUser->loginUser($username, $password);
+        $this->currentUser->authorizeUser($username, $password);
 
-        $_SESSION['username'] = $this->currentUser->getUsername();
+        $_SESSION[self::LOGIN_NAME] = $this->currentUser->getUsername();
     }
 
     public function loginUser()
     {
-        $_SESSION['username'] = 'Admin';
+        $_SESSION[self::LOGIN_NAME] = 'Admin';
     }
 
     public function logoutUser()
@@ -39,7 +42,7 @@ class UserSession
 
     public function isNewLogin()
     {
-        if (isset($_SESSION['username'])) {
+        if (isset($_SESSION[self::LOGIN_NAME])) {
             return false;
         }
         return true;
@@ -49,5 +52,37 @@ class UserSession
     {
         $this->currentUser = new User();
         $this->currentUser->registerUser($username, $password, $passwordRepeat);
+    }
+
+    public function setStoredUsername($name)
+    {
+        $_SESSION['storedname'] = $name;
+    }
+
+    public function getStoredUsername()
+    {
+        if (isset($_SESSION['storedname'])) {
+            //return strip_tags($_SESSION['storedname']);
+            return $_SESSION['storedname'];
+        }
+        return '';
+    }
+
+    public function setStatusMessage($message)
+    {
+        if (isset($_SESSION[self::STORED_MESSAGE]) == false) {
+            $_SESSION[self::STORED_MESSAGE] = '';
+        }
+        $_SESSION[self::STORED_MESSAGE] = $message;
+    }
+
+    public function getStatusMessage()
+    {
+        if (isset($_SESSION[self::STORED_MESSAGE])) {
+            $msg = $_SESSION[self::STORED_MESSAGE];
+            $_SESSION[self::STORED_MESSAGE] = '';
+            return $msg;
+        }
+        return '';
     }
 }

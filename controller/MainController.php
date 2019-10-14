@@ -43,7 +43,7 @@ class MainController
         $isLoggedIn = $this->userSession->isLoggedIn();
 
         if ($isRegister) {
-            $this->layoutView->render($isLoggedIn, $this->registerView, $this->dateTimeView, $isRegister, $statusMessage);
+            $this->layoutView->render($isLoggedIn, $this->registerView, $isRegister, $statusMessage);
         } else {
             $this->loginController->doLoginView();
             //$this->layoutView->render($isLoggedIn, $this->loginView, $this->dateTimeView, $isRegister, $statusMessage);

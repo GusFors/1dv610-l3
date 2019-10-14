@@ -3,8 +3,14 @@
 
 class LayoutView
 {
+  private $dayTimeView;
 
-  public function render($isLoggedIn, $viewToRender, DateTimeView $dtv, $isRegister = false, $statusMessage)
+  public function __construct(DateTimeView $dv)
+  {
+    $this->dayTimeView = $dv;
+  }
+
+  public function render($isLoggedIn, $viewToRender, bool $isRegister = false, string $statusMessage, string $storedName = '')
   {
     echo '<!DOCTYPE html>
       <html>
@@ -19,9 +25,9 @@ class LayoutView
         
           
           <div class="container">
-              ' . $viewToRender->response($statusMessage, $isLoggedIn) . '
+              ' . $viewToRender->response($statusMessage, $isLoggedIn, $storedName) . '
               
-              ' . $dtv->show() . '
+              ' . $this->dayTimeView->show() . '
           </div>
          </body>
       </html>
