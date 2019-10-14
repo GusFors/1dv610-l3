@@ -9,15 +9,15 @@ class RegisterView
     private static $passwordRepeat = 'RegisterView::PasswordRepeat';
     private static $messageId = 'RegisterView::Message';
 
-    public function response($message = 'fdec')
+    public function response($message = 'fdec', $isLoggedIn = false, $storedName)
     {
-       
 
-        $response = $this->generateRegisterFormHTML($message);
+
+        $response = $this->generateRegisterFormHTML($message, $storedName);
         return $response;
     }
 
-    private function generateRegisterFormHTML($message)
+    private function generateRegisterFormHTML($message, $storedName)
     {
 
         return '<form action="?register" method="post" enctype="multipart/form-data">
@@ -26,7 +26,7 @@ class RegisterView
             <p id="' . self::$messageId . '">' . $message . '</p>
 
             <label for="' . self::$name . '">Username :</label>
-            <input type="text" size="20" name="' . self::$name . '" id="' . self::$name . '" value="">
+            <input type="text" size="20" name="' . self::$name . '" id="' . self::$name . '" value="' . $storedName . '">
             <br>
             <label for="' . self::$password . '">Password  :</label>
             <input type="password" size="20" name="' . self::$password . '" id="' . self::$password . '" value="">
@@ -40,7 +40,8 @@ class RegisterView
        </form>';
     }
 
-    public function checkRegisterStatus() {
+    public function checkRegisterStatus()
+    {
         if (isset($_GET['register'])) {
             return true;
         } else {
@@ -48,7 +49,8 @@ class RegisterView
         }
     }
 
-    public function getRequestUsername() {
+    public function getRequestUsername()
+    {
 
         if ($this->checkRequestUserName()) {
             return $_POST[self::$name];
@@ -56,29 +58,34 @@ class RegisterView
         return null;
     }
 
-    private function checkRequestUserName() {
+    private function checkRequestUserName()
+    {
         return isset($_POST[self::$name]);
     }
 
-    private function checkRequestPassword() {
+    private function checkRequestPassword()
+    {
         return isset($_POST[self::$password]);
     }
 
-    public function getRequestPassword() {
+    public function getRequestPassword()
+    {
         if ($this->checkRequestPassword()) {
             return $_POST[self::$password];
         }
         return null;
     }
 
-    public function getRequestPasswordRepeat() {
+    public function getRequestPasswordRepeat()
+    {
         if (isset($_POST[self::$passwordRepeat])) {
             return $_POST[self::$passwordRepeat];
         }
         return null;
     }
 
-    public function checkRegisterRequest() {
+    public function checkRegisterRequest()
+    {
         return isset($_POST[self::$register]);
     }
 }

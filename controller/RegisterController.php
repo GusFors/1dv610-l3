@@ -32,6 +32,7 @@ class RegisterController
                 $this->userSession->tryRegister($username, $password, $passwordRepeat);
             } catch (Exception $ex) {
                 $this->userSession->setStatusMessage($ex->getMessage());
+                $this->userSession->setStoredUsername($username);
             }
         }
 
