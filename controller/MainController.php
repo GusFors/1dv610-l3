@@ -5,14 +5,15 @@ class MainController
 
     private $loginController;
     private $registerController;
+    private $userSession;
 
 
 
-    public function __construct(LoginController $loginController, RegisterController $registerController)
+    public function __construct(LoginController $loginController, RegisterController $registerController, UserSession $us)
     {
         $this->loginController = $loginController;
         $this->registerController = $registerController;
-
+        $this->userSession = $us;
         // $this->dateTimeView = $dateTimeView;
 
 
@@ -22,7 +23,9 @@ class MainController
     {
 
         $isRegister = $this->registerController->isRegister();
-
+        if($this->userSession->isRedirect()) {
+            
+        }
         if ($isRegister) {
             $this->registerController->doRegisterView();
         } else {

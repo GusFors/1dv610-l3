@@ -34,6 +34,7 @@ class RegisterController
                 $this->database->validateUserRegistration($username, $password, $passwordRepeat);
                 if ($this->database->registerUser($username, $password)) {
                     $redirect = true;
+                    $this->userSession->setRedirect();
                    
                 }
                 $this->userSession->tryRegister($username, $password, $passwordRepeat);
@@ -44,8 +45,8 @@ class RegisterController
         $this->userSession->setStoredUsername($username);
         if ($redirect) {
             $this->userSession->setRegisterMessage();
-            //header('Location:http://localhost/1dv610-l3/index.php?');
-            header('Location:https://gusfors-l3.herokuapp.com/index.php');
+            header('Location: ./index.php');
+            //header('Location:https://gusfors-l3.herokuapp.com/index.php');
             
             //$this->layoutView->render(false, $this->loginView, false, $this->userSession->getStatusMessage(), $this->userSession->getStoredUsername(), '?');
             //header('Location:http://localhost/1dv610-l3/index.php?');

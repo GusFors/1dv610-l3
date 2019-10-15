@@ -11,6 +11,7 @@ class UserSession
     const LOGIN_NAME = 'loginName';
     const STORED_MESSAGE = 'storedMessage';
     const STORED_NAME = 'storedname';
+    private $redirect;
 
     public function __construct()
     {
@@ -108,5 +109,13 @@ class UserSession
             return $msg;
         }
         return '';
+    }
+    public function setRedirect() {
+        $this->redirect = true;
+    }
+    public function isRedirect() {
+        $isRedir = $this->redirect;
+        $this->redirect = false;
+        return $isRedir;
     }
 }

@@ -31,7 +31,7 @@ class Application
         $this->userSession = new UserSession();
         $this->loginController = new LoginController($this->loginView, $this->userSession, $this->layoutView, $this->database); // TODO; Not so many arguments
         $this->registerController = new RegisterController($this->registerView, $this->userSession, $this->layoutView, $this->database);
-        $this->mainController = new MainController($this->loginController, $this->registerController);
+        $this->mainController = new MainController($this->loginController, $this->registerController, $this->userSession);
     }
 
     public function run()
