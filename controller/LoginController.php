@@ -29,10 +29,12 @@ class LoginController
 
     public function loginUser($username, $password)
     {
+
         try {
             $this->database->isDbConnected();
-            if ($this->database->matchLoginUser($username, $password)) { } else { }
-            $this->userSession->sessionLogin($username, $password);
+            $tryUser = new User($username, $password);
+            $this->database->matchLoginUser($username, $password);
+            $this->userSession->sessionLogin($tryUser);
         } catch (Exception $ex) {
             $this->userSession->setStatusMessage($ex->getMessage());
         }
@@ -40,11 +42,11 @@ class LoginController
 
     public function doLoginView()
     {
+        $username = $this->loginView->getRequestUsername();
+        $password = $this->loginView->getRequestUserPassword();
         if ($this->loginView->isLoginSet()) {
-            $username = $this->loginView->getRequestUsername();
-            $password = $this->loginView->getRequestUserPassword();
+
             if ($this->userSession->isNewLogin()) {
-                //$this->statusMessage = 'Welcome';
                 $this->userSession->setWelcomeMessage();
             }
             $this->loginUser($username, $password);
@@ -59,7 +61,7 @@ class LoginController
         $isLoggedIn = $this->userSession->isLoggedIn();
 
         if ($isLoggedIn == false) {
-            $this->userSession->setStoredUsername($this->loginView->getRequestUsername());
+            $this->userSession->setStoredUsername($username);
         }
 
         $this->layoutView->render($isLoggedIn, $this->loginView, false, $this->userSession->getStatusMessage(), $this->userSession->getStoredUsername());
