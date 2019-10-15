@@ -90,6 +90,10 @@ class LoginView
 		return isset($_POST[self::$login]);
 	}
 
+	public function isRemember() {
+        return isset($_POST[self::$keep]);
+    }
+
 	public function getLogoutPost() {
         return isset($_POST[self::$logout]);
     }

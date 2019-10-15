@@ -49,9 +49,8 @@ class UserSession
         return true;
     }
 
-    public function isNewRegister() {
-
-    }
+    public function isNewRegister()
+    { }
 
     public function tryRegister($username, $password, $passwordRepeat) // onödig?
     {
@@ -81,15 +80,23 @@ class UserSession
         $_SESSION[self::STORED_MESSAGE] = $message;
     }
 
-    public function setWelcomeMessage() {
+    public function setWelcomeMessage()
+    {
         $this->setStatusMessage('Welcome');
     }
 
-    public function setByeMessage() {
+    public function setRememberMessage()
+    {
+        $this->setStatusMessage('Welcome and you will be remembered');
+    }
+
+    public function setByeMessage()
+    {
         $this->setStatusMessage('Bye bye!');
     }
 
-    public function setRegisterMessage() {
+    public function setRegisterMessage()
+    {
         $this->setStatusMessage('Registered new user.');
     }
 

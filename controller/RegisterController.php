@@ -46,6 +46,7 @@ class RegisterController
             $this->userSession->setRegisterMessage();
             //header('Location:http://localhost/1dv610-l3/index.php?');
             header('Location:https://gusfors-l3.herokuapp.com/index.php');
+            
             //$this->layoutView->render(false, $this->loginView, false, $this->userSession->getStatusMessage(), $this->userSession->getStoredUsername(), '?');
             //header('Location:http://localhost/1dv610-l3/index.php?');
         } else {

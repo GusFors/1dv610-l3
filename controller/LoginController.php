@@ -47,7 +47,11 @@ class LoginController
         if ($this->loginView->isLoginSet()) {
 
             if ($this->userSession->isNewLogin()) {
-                $this->userSession->setWelcomeMessage();
+                if ($this->loginView->isRemember()) {
+                    $this->userSession->setRememberMessage();
+                } else {
+                    $this->userSession->setWelcomeMessage();
+                }
             }
             $this->loginUser($username, $password);
         } else if ($this->isLogOut()) {
