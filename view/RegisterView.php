@@ -20,7 +20,7 @@ class RegisterView
     private function generateRegisterFormHTML($message, $storedName)
     {
         
-        return '<form action="" method="post">
+        return '<form action="?register" method="post">
         <fieldset>
         <legend>Register a new user - Write username and password</legend>
             <p id="' . self::$messageId . '">' . $message . '</p>
