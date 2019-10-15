@@ -8,12 +8,11 @@ class LoginController
     private $statusMessage = '';
     private $dateTimeView;
 
-    public function __construct(LoginView $lv, UserSession $us, LayoutView $laV, DateTimeView $dv)
+    public function __construct(LoginView $lv, UserSession $us, LayoutView $laV)
     {
         $this->loginView = $lv;
         $this->userSession = $us;
         $this->layoutView = $laV;
-        $this->dateTimeView = $dv;
     }
 
     public function isLogin()

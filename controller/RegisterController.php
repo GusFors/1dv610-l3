@@ -8,12 +8,12 @@ class RegisterController
     private $statusMessage = '';
     private $dateTimeView;
 
-    public function __construct(RegisterView $rv, UserSession $us, LayoutView $laV, DateTimeView $dv)
+    public function __construct(RegisterView $rv, UserSession $us, LayoutView $laV)
     {
         $this->registerView = $rv;
         $this->userSession = $us;
         $this->layoutView = $laV;
-        $this->dateTimeView = $dv;
+   
     }
 
     public function isRegister()

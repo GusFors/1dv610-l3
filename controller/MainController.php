@@ -12,15 +12,14 @@ class MainController
 
 
 
-    public function __construct($loginView, $dateTimeView, $registerView, $layoutView, $userSession, $loginController, $registerController)
+    public function __construct(LoginController $loginController, RegisterController $registerController)
     {
         $this->loginController = $loginController;
         $this->registerController = $registerController;
-        $this->loginView = $loginView;
-        $this->dateTimeView = $dateTimeView;
-        $this->registerView = $registerView;
-        $this->layoutView = $layoutView;
-        $this->userSession = $userSession;
+
+        // $this->dateTimeView = $dateTimeView;
+
+
     }
 
     public function viewRenderOptions()
@@ -28,10 +27,10 @@ class MainController
         $statusMessage = '';
         $isRegister = $this->registerController->isRegister();
 
-        
 
 
-        $isLoggedIn = $this->userSession->isLoggedIn();
+
+
 
         if ($isRegister) {
             $this->registerController->doRegisterView();

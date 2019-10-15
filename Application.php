@@ -26,9 +26,9 @@ class Application
         $this->registerView = new RegisterView();
         $this->layoutView = new Layoutview($this->dateTimeView);
         $this->userSession = new UserSession();
-        $this->loginController = new LoginController($this->loginView, $this->userSession, $this->layoutView, $this->dateTimeView); // TODO; Not so many arguments
-        $this->registerController = new RegisterController($this->registerView, $this->userSession, $this->layoutView, $this->dateTimeView);
-        $this->mainController = new MainController($this->loginView, $this->dateTimeView, $this->registerView, $this->layoutView, $this->userSession, $this->loginController, $this->registerController);
+        $this->loginController = new LoginController($this->loginView, $this->userSession, $this->layoutView); // TODO; Not so many arguments
+        $this->registerController = new RegisterController($this->registerView, $this->userSession, $this->layoutView);
+        $this->mainController = new MainController($this->loginController, $this->registerController);
     }
 
     public function run()
