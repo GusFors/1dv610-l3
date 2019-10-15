@@ -2,11 +2,7 @@
 
 class MainController
 {
-    private $loginView;
-    private $dateTimeView;
-    private $registerView;
-    private $layoutView;
-    private $userSession;
+
     private $loginController;
     private $registerController;
 
@@ -24,19 +20,13 @@ class MainController
 
     public function viewRenderOptions()
     {
-        $statusMessage = '';
+
         $isRegister = $this->registerController->isRegister();
-
-
-
-
-
 
         if ($isRegister) {
             $this->registerController->doRegisterView();
         } else {
             $this->loginController->doLoginView();
-            //$this->layoutView->render($isLoggedIn, $this->loginView, $this->dateTimeView, $isRegister, $statusMessage);
         }
     }
 }

@@ -5,16 +5,15 @@ class RegisterController
     private $registerView;
     private $layoutView;
     private $userSession;
-    private $statusMessage = '';
-    private $dateTimeView;
     private $database;
-
+    
     public function __construct(RegisterView $rv, UserSession $us, LayoutView $laV, Database $db)
     {
         $this->registerView = $rv;
         $this->userSession = $us;
         $this->layoutView = $laV;
         $this->database = $db;
+       
     }
 
     public function isRegister()
@@ -24,6 +23,7 @@ class RegisterController
 
     public function doRegisterView()
     {
+        $redirect = false;
         $username = $this->registerView->getRequestUsername();
         if ($this->registerView->checkRegisterRequest()) {
 
@@ -32,12 +32,23 @@ class RegisterController
 
             try {
                 $this->database->validateUserRegistration($username, $password, $passwordRepeat);
+                if ($this->database->registerUser($username, $password)) {
+                    $redirect = true;
+                   
+                }
                 $this->userSession->tryRegister($username, $password, $passwordRepeat);
             } catch (Exception $ex) {
                 $this->userSession->setStatusMessage($ex->getMessage());
             }
         }
         $this->userSession->setStoredUsername($username);
-        $this->layoutView->render(false, $this->registerView, true, $this->userSession->getStatusMessage(), $this->userSession->getStoredUsername());
+        if ($redirect) {
+            $this->userSession->setRegisterMessage();
+            header('Location:http://localhost/1dv610-l3/index.php?');
+            //$this->layoutView->render(false, $this->loginView, false, $this->userSession->getStatusMessage(), $this->userSession->getStoredUsername(), '?');
+            //header('Location:http://localhost/1dv610-l3/index.php?');
+        } else {
+            $this->layoutView->render(false, $this->registerView, true, $this->userSession->getStatusMessage(), $this->userSession->getStoredUsername());
+        }
     }
 }

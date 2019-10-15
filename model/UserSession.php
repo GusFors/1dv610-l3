@@ -49,6 +49,10 @@ class UserSession
         return true;
     }
 
+    public function isNewRegister() {
+
+    }
+
     public function tryRegister($username, $password, $passwordRepeat) // onödig?
     {
         //$this->currentUser = new User($username, $password); // flytta?
@@ -83,6 +87,10 @@ class UserSession
 
     public function setByeMessage() {
         $this->setStatusMessage('Bye bye!');
+    }
+
+    public function setRegisterMessage() {
+        $this->setStatusMessage('Registered new user.');
     }
 
     public function getStatusMessage(): string

@@ -9,7 +9,7 @@ class RegisterView
     private static $passwordRepeat = 'RegisterView::PasswordRepeat';
     private static $messageId = 'RegisterView::Message';
 
-    public function response($message = 'fdec', $isLoggedIn = false, $storedName)
+    public function response($message = '', $isLoggedIn = false, $storedName)
     {
 
 
@@ -19,8 +19,8 @@ class RegisterView
 
     private function generateRegisterFormHTML($message, $storedName)
     {
-
-        return '<form action="?register" method="post" enctype="multipart/form-data">
+        
+        return '<form action="" method="post">
         <fieldset>
         <legend>Register a new user - Write username and password</legend>
             <p id="' . self::$messageId . '">' . $message . '</p>
