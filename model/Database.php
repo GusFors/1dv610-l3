@@ -22,7 +22,7 @@ class Database
     {
 
         if ($this->dbConnection) {
-            echo ('uwu');
+           
             return true;
         }
         return false;
@@ -33,9 +33,7 @@ class Database
         $sql = "SELECT id FROM users WHERE BINARY username = '$username' AND BINARY password = '$password'";
 
         $result = mysqli_query($this->dbConnection, $sql);
-        if (empty($result)) {
-            $this->createUserTable();
-        }
+        
 
 
         $count = mysqli_num_rows($result);

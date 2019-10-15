@@ -31,11 +31,7 @@ class LoginController
     {
         try {
             $this->database->isDbConnected();
-            if($this->database->matchLoginUser($username, $password)) {
-                echo('exists');
-            } else {
-                echo('no exist');
-            }
+            if ($this->database->matchLoginUser($username, $password)) { } else { }
             $this->userSession->sessionLogin($username, $password);
         } catch (Exception $ex) {
             $this->userSession->setStatusMessage($ex->getMessage());
