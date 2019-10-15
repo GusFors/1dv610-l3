@@ -6,14 +6,15 @@ class RegisterController
     private $layoutView;
     private $userSession;
     private $database;
+    private $loginView;
     
-    public function __construct(RegisterView $rv, UserSession $us, LayoutView $laV, Database $db)
+    public function __construct(RegisterView $rv, UserSession $us, LayoutView $laV, Database $db, LoginView $lv)
     {
         $this->registerView = $rv;
         $this->userSession = $us;
         $this->layoutView = $laV;
         $this->database = $db;
-       
+        $this->loginView = $lv;
     }
 
     public function isRegister()
@@ -45,10 +46,14 @@ class RegisterController
         $this->userSession->setStoredUsername($username);
         if ($redirect) {
             $this->userSession->setRegisterMessage();
-            header('Location: ./index.php');
+            
+            //header('Location: ./index.php');
+            header('Location: ' . $_SERVER['PHP_SELF']);
             //header('Location:https://gusfors-l3.herokuapp.com/index.php');
             
-            //$this->layoutView->render(false, $this->loginView, false, $this->userSession->getStatusMessage(), $this->userSession->getStoredUsername(), '?');
+            //$this->layoutView->render(false, $this->loginView, false, $this->userSession->getStatusMessage(), $this->userSession->getStoredUsername());
+            //$this->userSession->setRedirect();
+            //$_SESSION['redir'] = 'yes';
             //header('Location:http://localhost/1dv610-l3/index.php?');
         } else {
             $this->layoutView->render(false, $this->registerView, true, $this->userSession->getStatusMessage(), $this->userSession->getStoredUsername());

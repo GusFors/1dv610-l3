@@ -23,9 +23,9 @@ class MainController
     {
 
         $isRegister = $this->registerController->isRegister();
-        if($this->userSession->isRedirect()) {
-            
-        }
+        //if ($this->userSession->isRedirect()) {
+          //  $this->loginController->doLoginView();
+        //} else 
         if ($isRegister) {
             $this->registerController->doRegisterView();
         } else {

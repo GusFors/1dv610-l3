@@ -43,7 +43,7 @@ class LoginView
 	private function generateLogoutButtonHTML($message)
 	{
 		return '
-			<form  method="post" >
+			<form action="?" method="post" >
 				<p id="' . self::$messageId . '">' . $message . '</p>
 				<input type="submit" name="' . self::$logout . '" value="logout"/>
 			</form>
@@ -58,7 +58,7 @@ class LoginView
 	private function generateLoginFormHTML($message, $storedName = '')
 	{
 		return '
-			<form method="post" > 
+			<form action="?" method="post" > 
 				<fieldset>
 					<legend>Login - enter Username and password</legend>
 					<p id="' . self::$messageId . '">' . $message . '</p>

@@ -115,7 +115,7 @@ class UserSession
     }
     public function isRedirect() {
         $isRedir = $this->redirect;
-        $this->redirect = false;
+        //$this->redirect = false;
         return $isRedir;
     }
 }

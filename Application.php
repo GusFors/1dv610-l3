@@ -30,7 +30,7 @@ class Application
         $this->layoutView = new Layoutview($this->dateTimeView);
         $this->userSession = new UserSession();
         $this->loginController = new LoginController($this->loginView, $this->userSession, $this->layoutView, $this->database); // TODO; Not so many arguments
-        $this->registerController = new RegisterController($this->registerView, $this->userSession, $this->layoutView, $this->database);
+        $this->registerController = new RegisterController($this->registerView, $this->userSession, $this->layoutView, $this->database, $this->loginView);
         $this->mainController = new MainController($this->loginController, $this->registerController, $this->userSession);
     }
 
