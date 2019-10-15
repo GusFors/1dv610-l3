@@ -7,13 +7,17 @@ class User
     const MIN_USERNAME_LENGTH = 3;
     const MIN_PASSWORD_LENGTH = 6;
 
-    public function __construct()
-    { }
+    public function __construct($username, $password)
+    {
+        $this->setLoginUsername($username);
+        $this->setLoginPassword($password);
+        $this->checkUserMatch();
+    }
 
     private function setLoginUsername($username)
     {
         if (strlen($username) < 1) {
-            throw new Exception('Username is missing', 1);
+            throw new Exception('Username is missing', 1); //TODO make own exception classes
         }
         if ($username != strip_tags($username)) {
             throw new Exception('Username contains invalid characters.', 1);
@@ -34,7 +38,7 @@ class User
         if ($this->username == 'Admin' && $this->password == 'Password') {
             //
         } else {
-            throw new Exception('Wrong name or password', 1);
+            //throw new Exception('Wrong name or password', 1);
         }
     }
 
@@ -51,7 +55,7 @@ class User
     }
 
     public function registerUser($username, $password, $passwordRepeat)
-    {   
+    {
         $errorMessage = '';
         $isError = false;
 
@@ -79,12 +83,10 @@ class User
             }
             $errorMessage .= 'Username contains invalid characters.';
             $isError = true;
-            
         }
-        
-        if($isError) {
+
+        if ($isError) {
             throw new Exception($errorMessage, 1);
-            
         }
     }
 }

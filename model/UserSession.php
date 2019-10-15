@@ -25,8 +25,8 @@ class UserSession
     public function sessionLogin($username, $password)
     {
 
-        $this->currentUser = new User();
-        $this->currentUser->authorizeUser($username, $password);
+        $this->currentUser = new User($username, $password);
+        //$this->currentUser->authorizeUser($username, $password);
 
         $_SESSION[self::LOGIN_NAME] = $this->currentUser->getUsername();
     }
@@ -51,7 +51,7 @@ class UserSession
 
     public function tryRegister($username, $password, $passwordRepeat) // onödig?
     {
-        $this->currentUser = new User(); // flytta?
+        $this->currentUser = new User($username, $password); // flytta?
         $this->currentUser->registerUser($username, $password, $passwordRepeat);
     }
 

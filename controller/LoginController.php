@@ -7,12 +7,14 @@ class LoginController
     private $userSession;
     private $statusMessage = '';
     private $dateTimeView;
+    private $database;
 
-    public function __construct(LoginView $lv, UserSession $us, LayoutView $laV)
+    public function __construct(LoginView $lv, UserSession $us, LayoutView $laV, Database $db)
     {
         $this->loginView = $lv;
         $this->userSession = $us;
         $this->layoutView = $laV;
+        $this->database = $db;
     }
 
     public function isLogin()
@@ -28,6 +30,12 @@ class LoginController
     public function loginUser($username, $password)
     {
         try {
+            $this->database->isDbConnected();
+            if($this->database->matchLoginUser($username, $password)) {
+                echo('exists');
+            } else {
+                echo('no exist');
+            }
             $this->userSession->sessionLogin($username, $password);
         } catch (Exception $ex) {
             $this->userSession->setStatusMessage($ex->getMessage());
