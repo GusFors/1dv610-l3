@@ -9,7 +9,7 @@ class RegisterView
     private static $passwordRepeat = 'RegisterView::PasswordRepeat';
     private static $messageId = 'RegisterView::Message';
 
-    public function response($message = '', $isLoggedIn = false, $storedName)
+    public function response($message = '', $storedName)
     {
 
 

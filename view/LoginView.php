@@ -10,8 +10,12 @@ class LoginView
 	private static $cookiePassword = 'LoginView::CookiePassword';
 	private static $keep = 'LoginView::KeepMeLoggedIn';
 	private static $messageId = 'LoginView::Message';
+	private $userSession;
 
-
+	public function __construct(UserSession $userSession)
+	{
+		$this->userSession = $userSession;
+	}
 
 	/**
 	 * Create HTTP response
@@ -20,12 +24,12 @@ class LoginView
 	 *
 	 * @return  void BUT writes to standard output and cookies!
 	 */
-	public function response($message, $isLoggedIn, $storedName)
+	public function response($message, $storedName)
 	{
-		
-		
 
-		if ($isLoggedIn) {
+
+
+		if ($this->userSession->isLoggedIn()) {
 			$response = $this->generateLogoutButtonHTML($message);
 		} else {
 			$response = $this->generateLoginFormHTML($message, $storedName);
@@ -33,6 +37,15 @@ class LoginView
 
 		//$response .= $this->generateLogoutButtonHTML($message);
 		return $response;
+	}
+
+	private function renderIsLoggedIn()
+	{
+		if ($this->userSession->isLoggedIn()) {
+			return '<h2>Logged in</h2>';
+		} else {
+			return '<h2>Not logged in</h2>';
+		}
 	}
 
 	/**
@@ -64,7 +77,7 @@ class LoginView
 					<p id="' . self::$messageId . '">' . $message . '</p>
 					
 					<label for="' . self::$name . '">Username :</label>
-					<input type="text" id="' . self::$name . '" name="' . self::$name . '" value="' .$storedName . '" />
+					<input type="text" id="' . self::$name . '" name="' . self::$name . '" value="' . $storedName . '" />
 
 					<label for="' . self::$password . '">Password :</label>
 					<input type="password" id="' . self::$password . '" name="' . self::$password . '" />
@@ -90,13 +103,15 @@ class LoginView
 		return isset($_POST[self::$login]);
 	}
 
-	public function isRemember() {
-        return isset($_POST[self::$keep]);
-    }
+	public function isRemember()
+	{
+		return isset($_POST[self::$keep]);
+	}
 
-	public function getLogoutPost() {
-        return isset($_POST[self::$logout]);
-    }
+	public function getLogoutPost()
+	{
+		return isset($_POST[self::$logout]);
+	}
 
 
 	public function getRequestUsername()

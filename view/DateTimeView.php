@@ -2,9 +2,13 @@
 
 class DateTimeView
 {
+	private $date;
+	public function __construct()
+	{
+		//$this->date = $date;
+	}
 
-
-	public function getWeekDay()
+	public function getWeekDay() // Separate file?
 	{
 		return date('l');
 	}
@@ -39,9 +43,14 @@ class DateTimeView
 		return date('s');
 	}
 
+	public function setTimeZone(string $timezone)
+	{
+		date_default_timezone_set($timezone);
+	}
+
 	public function show()
 	{
-		date_default_timezone_set('Europe/Stockholm');
+		$this->setTimeZone('Europe/Stockholm');
 		$timeString = '';
 		return '<p>' . $timeString . $this->getWeekDay() . ', the ' . $this->getDateDay() . 'th of ' . $this->getMonth() . ' ' . $this->getYear() . ', The time is ' . $this->getHour() . ':' . $this->getMinute() . ':' . $this->getSecond() . '</p>';
 	}

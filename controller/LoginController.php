@@ -73,7 +73,7 @@ class LoginController
             }
         }
 
-        $this->layoutView->render($isLoggedIn, $this->loginView, false, $this->userSession->getStatusMessage(), $this->userSession->getStoredUsername());
+        $this->layoutView->render($this->loginView, false, $this->userSession->getStatusMessage(), $this->userSession->getStoredUsername());
     }
 
     public function logoutUser()

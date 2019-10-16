@@ -61,7 +61,7 @@ class RegisterController
             //$_SESSION['redir'] = 'yes';
             //header('Location:http://localhost/1dv610-l3/index.php?');
         } else {
-            $this->layoutView->render(false, $this->registerView, true, $this->userSession->getStatusMessage(), $this->userSession->getStoredUsername());
+            $this->layoutView->render($this->registerView, true, $this->userSession->getStatusMessage(), $this->userSession->getStoredUsername());
         }
     }
 }

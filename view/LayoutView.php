@@ -4,13 +4,15 @@
 class LayoutView
 {
   private $dayTimeView;
+  private $userSession;
 
-  public function __construct(DateTimeView $dv)
+  public function __construct(DateTimeView $dv, UserSession $userSession)
   {
     $this->dayTimeView = $dv;
+    $this->userSession = $userSession;
   }
 
-  public function render($isLoggedIn, $viewToRender, bool $isRegister = false, string $statusMessage, string $storedName = '')
+  public function render($viewToRender, bool $isRegister = false, string $statusMessage, string $storedName = '')
   {
     echo '<!DOCTYPE html>
       <html>
@@ -20,12 +22,12 @@ class LayoutView
         </head>
         <body>
           <h1>Assignment 2</h1>
-          ' . $this->renderHomeOrRegisterTag($isRegister, $isLoggedIn) . '
-          ' . $this->renderIsLoggedIn($isLoggedIn) . '
+          ' . $this->renderHomeOrRegisterTag($isRegister) . '
+          ' . $this->renderIsLoggedIn() . '
         
           
           <div class="container">
-              ' . $viewToRender->response($statusMessage, $isLoggedIn, $storedName) . '
+              ' . $viewToRender->response($statusMessage, $storedName) . '
               
               ' . $this->dayTimeView->show() . '
           </div>
@@ -34,20 +36,20 @@ class LayoutView
     ';
   }
 
-  private function renderIsLoggedIn($isLoggedIn)
+  private function renderIsLoggedIn()
   {
-    if ($isLoggedIn) {
+    if ($this->userSession->isLoggedIn()) {
       return '<h2>Logged in</h2>';
     } else {
       return '<h2>Not logged in</h2>';
     }
   }
 
-  private function renderHomeOrRegisterTag($isRegister, $isLoggedIn)
+  private function renderHomeOrRegisterTag($isRegister)
   {
     if ($isRegister) {
       return '<a href="?">Back to login</a>';
-    } else if (!$isLoggedIn) {
+    } else if (!$this->userSession->isLoggedIn()) {
       return '<a href="?register">Register a new user</a>';
     } else {
       return '';

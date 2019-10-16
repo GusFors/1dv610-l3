@@ -8,7 +8,7 @@ class UserSession
     private $statusMessage = '';
     private $currentUser;
     private $storedName;
-    const LOGIN_NAME = 'loginName';
+    const LOGIN_NAME = 'loginName'; //TODO ändra till privata variabler
     const STORED_MESSAGE = 'storedMessage';
     const STORED_NAME = 'storedname';
     private $redirect = false;

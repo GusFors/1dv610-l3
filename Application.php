@@ -22,13 +22,14 @@ class Application
     private $database;
 
     public function __construct()
-    {   
+    {
+        $this->userSession = new UserSession();
         $this->database = new Database();
-        $this->loginView = new LoginView();
+        $this->loginView = new LoginView($this->userSession);
         $this->dateTimeView = new DateTimeView();
         $this->registerView = new RegisterView();
-        $this->layoutView = new Layoutview($this->dateTimeView);
-        $this->userSession = new UserSession();
+        $this->layoutView = new Layoutview($this->dateTimeView, $this->userSession);
+
         $this->loginController = new LoginController($this->loginView, $this->userSession, $this->layoutView, $this->database); // TODO; Not so many arguments
         $this->registerController = new RegisterController($this->registerView, $this->userSession, $this->layoutView, $this->database, $this->loginView);
         $this->mainController = new MainController($this->loginController, $this->registerController, $this->userSession);
