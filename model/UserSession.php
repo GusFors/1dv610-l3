@@ -12,6 +12,8 @@ class UserSession
     const STORED_MESSAGE = 'storedMessage';
     const STORED_NAME = 'storedname';
     private $redirect = false;
+    private $registerStatus = false;
+    private $currentPage;
 
     public function __construct()
     {
@@ -50,8 +52,29 @@ class UserSession
         return true;
     }
 
-    public function isNewRegister()
-    { }
+    public function setCurrentPage($page)
+    {
+        $this->currentPage = $page;
+    }
+
+    public function getCurrentpage()
+    {
+        return $this->currentPage;
+    }
+
+    public function setRegisterPage()
+    {
+        $_SESSION['registerpage'] = true;
+    }
+
+    public function isRegister(): bool
+    {
+        if (isset($_SESSION['registerpage'])) {
+            return $_SESSION['registerpage'];
+        } else {
+            return false;
+        }
+    }
 
     public function tryRegister($username, $password, $passwordRepeat) // onödig?
     {
@@ -101,7 +124,7 @@ class UserSession
         $this->setStatusMessage('Registered new user.');
     }
 
-    public function getStatusMessage(): string
+    public function grabTemporaryMessage(): string
     {
         if (isset($_SESSION[self::STORED_MESSAGE])) {
             $msg = $_SESSION[self::STORED_MESSAGE];

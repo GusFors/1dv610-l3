@@ -41,7 +41,8 @@ class LoginController
     }
 
     public function doLoginView()
-    {
+    {   
+        $this->userSession->setCurrentPage('index');
         if ($this->userSession->isRedirect()) { }
         $username = $this->loginView->getRequestUsername();
         $password = $this->loginView->getRequestUserPassword();
@@ -73,7 +74,7 @@ class LoginController
             }
         }
 
-        $this->layoutView->render($this->loginView, false, $this->userSession->getStatusMessage(), $this->userSession->getStoredUsername());
+        $this->layoutView->render($this->loginView, $this->userSession->grabTemporaryMessage(), $this->userSession->getStoredUsername());
     }
 
     public function logoutUser()

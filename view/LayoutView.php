@@ -5,6 +5,8 @@ class LayoutView
 {
   private $dayTimeView;
   private $userSession;
+  private static $registerPage = 'register';
+  private static $indexPage = 'index';
 
   public function __construct(DateTimeView $dv, UserSession $userSession)
   {
@@ -12,7 +14,7 @@ class LayoutView
     $this->userSession = $userSession;
   }
 
-  public function render($viewToRender, bool $isRegister = false, string $statusMessage, string $storedName = '')
+  public function render($viewToRender, string $statusMessage, string $storedName = '')
   {
     echo '<!DOCTYPE html>
       <html>
@@ -22,7 +24,7 @@ class LayoutView
         </head>
         <body>
           <h1>Assignment 2</h1>
-          ' . $this->renderHomeOrRegisterTag($isRegister) . '
+          ' . $this->renderNavTagOptions() . '
           ' . $this->renderIsLoggedIn() . '
         
           
@@ -45,14 +47,12 @@ class LayoutView
     }
   }
 
-  private function renderHomeOrRegisterTag($isRegister)
+  private function renderNavTagOptions()
   {
-    if ($isRegister) {
-      return '<a href="?">Back to login</a>';
-    } else if (!$this->userSession->isLoggedIn()) {
+    if ($this->userSession->getCurrentpage() == self::$indexPage) {
       return '<a href="?register">Register a new user</a>';
-    } else {
-      return '';
+    } else if ($this->userSession->getCurrentpage() == self::$registerPage) {
+      return '<a href="?">Back to login</a>';
     }
   }
 }

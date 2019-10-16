@@ -6,14 +6,16 @@ class MainController
     private $loginController;
     private $registerController;
     private $userSession;
+    private $layoutView;
 
 
 
-    public function __construct(LoginController $loginController, RegisterController $registerController, UserSession $us)
+    public function __construct(LoginController $loginController, RegisterController $registerController, UserSession $us, LayoutView $lv)
     {
         $this->loginController = $loginController;
         $this->registerController = $registerController;
         $this->userSession = $us;
+        $this->layoutView = $lv;
         // $this->dateTimeView = $dateTimeView;
 
 
@@ -21,12 +23,10 @@ class MainController
 
     public function viewRenderOptions()
     {
-
-        $isRegister = $this->registerController->isRegister();
         //if ($this->userSession->isRedirect()) {
-          //  $this->loginController->doLoginView();
+        //  $this->loginController->doLoginView();
         //} else 
-        if ($isRegister) {
+        if ($this->registerController->isRegister()) {
             $this->registerController->doRegisterView();
         } else {
             $this->loginController->doLoginView();

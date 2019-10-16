@@ -23,7 +23,9 @@ class RegisterController
     }
 
     public function doRegisterView()
-    {
+    {   
+        $this->userSession->setRegisterPage();
+        $this->userSession->setCurrentPage('register');
         $redirect = false;
         $username = $this->registerView->getRequestUsername();
         $password = $this->registerView->getRequestPassword();
@@ -49,19 +51,13 @@ class RegisterController
         $this->userSession->setStoredUsername($username);
         if ($redirect) {
             $this->userSession->setRegisterMessage();
-            //$this->userSession->setStoredUsername($username);
-            //header('Location: ./index.php');
+
             $this->userSession->setRedirect(true);
             header('Location: ' . $_SERVER['PHP_SELF']);
-            //$this->userSession->setStoredUsername($username);
-            //header('Location:https://gusfors-l3.herokuapp.com/index.php');
 
-            //$this->layoutView->render(false, $this->loginView, false, $this->userSession->getStatusMessage(), $this->userSession->getStoredUsername());
-
-            //$_SESSION['redir'] = 'yes';
             //header('Location:http://localhost/1dv610-l3/index.php?');
         } else {
-            $this->layoutView->render($this->registerView, true, $this->userSession->getStatusMessage(), $this->userSession->getStoredUsername());
+            $this->layoutView->render($this->registerView, $this->userSession->grabTemporaryMessage(), $this->userSession->getStoredUsername());
         }
     }
 }
