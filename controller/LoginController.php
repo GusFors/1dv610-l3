@@ -42,6 +42,7 @@ class LoginController
 
     public function doLoginView()
     {
+        if ($this->userSession->isRedirect()) { }
         $username = $this->loginView->getRequestUsername();
         $password = $this->loginView->getRequestUserPassword();
         if ($this->loginView->isLoginSet()) {
@@ -65,7 +66,11 @@ class LoginController
         $isLoggedIn = $this->userSession->isLoggedIn();
 
         if ($isLoggedIn == false) {
-            $this->userSession->setStoredUsername($username);
+            if ($this->userSession->isRedirect() == false) {
+                $this->userSession->setStoredUsername($username);
+            } else {
+                $this->userSession->setRedirect(false);
+            }
         }
 
         $this->layoutView->render($isLoggedIn, $this->loginView, false, $this->userSession->getStatusMessage(), $this->userSession->getStoredUsername());

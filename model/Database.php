@@ -52,7 +52,7 @@ class Database
         $errorMessage = '';
         $isError = false;
 
-        if (strlen($username) < self::MIN_USERNAME_LENGTH) { 
+        if (strlen($username) < self::MIN_USERNAME_LENGTH) {
             $errorMessage .= 'Username has too few characters, at least 3 characters.';
             $isError = true;
         }
@@ -111,12 +111,16 @@ class Database
         }
     }
 
-    public function registerUser($username, $password) {
+    public function registerUser($username, $password)
+    {
 
-        $sql = "INSERT INTO users (username, password) VALUES ('$username', $password)";
+        $sql = "INSERT INTO users (username, password) VALUES ('$username', '$password')";
         $result = mysqli_query($this->dbConnection, $sql);
+        //$count = mysqli_num_rows($result);
+
+        //echo ("Error description: " . mysqli_error($this->dbConnection));
+
+
         return $result;
     }
-
-    
 }
