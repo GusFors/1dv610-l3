@@ -20,6 +20,8 @@ class Application
     private $userSession;
     private $registerController;
     private $database;
+    const REGISTER_PAGE = '/register';
+    const INDEX_PAGE = 'index';
 
     public function __construct()
     {
@@ -27,7 +29,7 @@ class Application
         $this->database = new Database();
         $this->loginView = new LoginView($this->userSession);
         $this->dateTimeView = new DateTimeView();
-        $this->registerView = new RegisterView();
+        $this->registerView = new RegisterView($this->userSession);
         $this->layoutView = new Layoutview($this->dateTimeView, $this->userSession);
 
         $this->loginController = new LoginController($this->loginView, $this->userSession, $this->layoutView, $this->database); // TODO; Not so many arguments

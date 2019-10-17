@@ -3,16 +3,13 @@ require_once('User.php');
 
 class UserSession
 {
-    private $isLoggedIn = false;
-    private $user;
-    private $statusMessage = '';
+
     private $currentUser;
-    private $storedName;
-    const LOGIN_NAME = 'loginName'; //TODO ändra till privata variabler
-    const STORED_MESSAGE = 'storedMessage';
-    const STORED_NAME = 'storedname';
-    private $redirect = false;
-    private $registerStatus = false;
+    private static $LOGIN_NAME = 'loginName'; //TODO ändra till privata variabler
+    private static $STORED_MESSAGE = 'storedMessage';
+    private static $STORED_NAME = 'storedname';
+    private static $REGISTER_PAGE = 'registerpage';
+    private static $SESSION_REDIRECT_STATUS = 'redirect';
     private $currentPage;
 
     public function __construct()
@@ -22,7 +19,7 @@ class UserSession
 
     public function isLoggedIn(): bool
     {
-        return isset($_SESSION[self::LOGIN_NAME]);
+        return isset($_SESSION[self::$LOGIN_NAME]);
     }
 
     public function sessionLogin(User $sessionUser)
@@ -31,12 +28,12 @@ class UserSession
         $this->currentUser = $sessionUser;
         //$this->currentUser->authorizeUser($username, $password);
 
-        $_SESSION[self::LOGIN_NAME] = $this->currentUser->getUsername();
+        $_SESSION[self::$LOGIN_NAME] = $this->currentUser->getUsername();
     }
 
     public function loginUser()
     {
-        $_SESSION[self::LOGIN_NAME] = 'Admin';
+        $_SESSION[self::$LOGIN_NAME] = $this->currentUser->getUsername();
     }
 
     public function logoutUser()
@@ -46,7 +43,7 @@ class UserSession
 
     public function isNewLogin()
     {
-        if (isset($_SESSION[self::LOGIN_NAME])) {
+        if (isset($_SESSION[self::$LOGIN_NAME])) {
             return false;
         }
         return true;
@@ -64,13 +61,13 @@ class UserSession
 
     public function setRegisterPage()
     {
-        $_SESSION['registerpage'] = true;
+        $_SESSION[self::$REGISTER_PAGE] = true;
     }
 
     public function isRegister(): bool
     {
-        if (isset($_SESSION['registerpage'])) {
-            return $_SESSION['registerpage'];
+        if (isset($_SESSION[self::$REGISTER_PAGE])) {
+            return $_SESSION[self::$REGISTER_PAGE];
         } else {
             return false;
         }
@@ -84,24 +81,24 @@ class UserSession
 
     public function setStoredUsername($name)
     {
-        $_SESSION[self::STORED_NAME] = strip_tags($name);
+        $_SESSION[self::$STORED_NAME] = strip_tags($name);
     }
 
     public function getStoredUsername()
     {
-        if (isset($_SESSION[self::STORED_NAME])) {
+        if (isset($_SESSION[self::$STORED_NAME])) {
             //return strip_tags($_SESSION['storedname']);
-            return $_SESSION[self::STORED_NAME];
+            return $_SESSION[self::$STORED_NAME];
         }
         return '';
     }
 
     public function setStatusMessage($message)
     {
-        if (isset($_SESSION[self::STORED_MESSAGE]) == false) {
-            $_SESSION[self::STORED_MESSAGE] = '';
+        if (isset($_SESSION[self::$STORED_MESSAGE]) == false) {
+            $_SESSION[self::$STORED_MESSAGE] = '';
         }
-        $_SESSION[self::STORED_MESSAGE] = $message;
+        $_SESSION[self::$STORED_MESSAGE] = $message;
     }
 
     public function setWelcomeMessage()
@@ -126,9 +123,9 @@ class UserSession
 
     public function grabTemporaryMessage(): string
     {
-        if (isset($_SESSION[self::STORED_MESSAGE])) {
-            $msg = $_SESSION[self::STORED_MESSAGE];
-            $_SESSION[self::STORED_MESSAGE] = '';
+        if (isset($_SESSION[self::$STORED_MESSAGE])) {
+            $msg = $_SESSION[self::$STORED_MESSAGE];
+            $_SESSION[self::$STORED_MESSAGE] = '';
             return $msg;
         }
         return '';
@@ -136,13 +133,13 @@ class UserSession
 
     public function setRedirect(bool $isRedir)
     {
-        $_SESSION['redir'] = $isRedir;
+        $_SESSION[self::$SESSION_REDIRECT_STATUS] = $isRedir;
     }
 
     public function isRedirect()
     {
-        if (isset($_SESSION['redir'])) {
-            return  $_SESSION['redir'];
+        if (isset($_SESSION[self::$SESSION_REDIRECT_STATUS])) {
+            return  $_SESSION[self::$SESSION_REDIRECT_STATUS];
         }
         return false;
     }

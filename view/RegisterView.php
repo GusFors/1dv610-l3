@@ -8,18 +8,24 @@ class RegisterView
     private static $password = 'RegisterView::Password';
     private static $passwordRepeat = 'RegisterView::PasswordRepeat';
     private static $messageId = 'RegisterView::Message';
+    private $userSession;
 
-    public function response($message = '', $storedName)
+    public function __construct(UserSession $userSession)
+    {
+        $this->userSession = $userSession;
+    }
+
+    public function response($message = '')
     {
 
 
-        $response = $this->generateRegisterFormHTML($message, $storedName);
+        $response = $this->generateRegisterFormHTML($message);
         return $response;
     }
 
-    private function generateRegisterFormHTML($message, $storedName)
+    private function generateRegisterFormHTML($message)
     {
-        
+        $storedName = $this->userSession->getStoredUsername();
         return '<form action="?register" method="post">
         <fieldset>
         <legend>Register a new user - Write username and password</legend>

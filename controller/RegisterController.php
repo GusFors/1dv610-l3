@@ -1,6 +1,8 @@
 <?php
 
-class RegisterController
+require_once('Controller.php'); //TODO Namespace
+
+class RegisterController extends Controller
 {
     private $registerView;
     private $layoutView;
@@ -23,9 +25,9 @@ class RegisterController
     }
 
     public function doRegisterView()
-    {   
+    {
         $this->userSession->setRegisterPage();
-        $this->userSession->setCurrentPage('register');
+        $this->userSession->setCurrentPage(Application::REGISTER_PAGE);
         $redirect = false;
         $username = $this->registerView->getRequestUsername();
         $password = $this->registerView->getRequestPassword();
@@ -35,13 +37,9 @@ class RegisterController
             $passwordRepeat = $this->registerView->getRequestPasswordRepeat();
 
             try {
-                $this->database->validateUserRegistration($username, $password, $passwordRepeat);
-                if ($this->database->registerUser($username, $password)) {
+
+                if ($this->database->registerUser($username, $password, $passwordRepeat)) {
                     $redirect = true;
-
-                    //$this->userSession->isRedirect();
-
-
                 }
                 $this->userSession->tryRegister($username, $password, $passwordRepeat);
             } catch (Exception $ex) {
@@ -53,11 +51,11 @@ class RegisterController
             $this->userSession->setRegisterMessage();
 
             $this->userSession->setRedirect(true);
-            header('Location: ' . $_SERVER['PHP_SELF']);
+            $this->goToIndex();
 
             //header('Location:http://localhost/1dv610-l3/index.php?');
         } else {
-            $this->layoutView->render($this->registerView, $this->userSession->grabTemporaryMessage(), $this->userSession->getStoredUsername());
+            $this->layoutView->render($this->registerView, '', $this->userSession->getStoredUsername());
         }
     }
 }

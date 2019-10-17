@@ -5,19 +5,25 @@ class Database
     private $dbConnection;
     const MIN_USERNAME_LENGTH = 3;
     const MIN_PASSWORD_LENGTH = 6;
+    private static $DB_URL = 'CLEARDB_DATABASE_URL';
+    private static $HOST_URL = 'host';
+    private static $USER_URL = 'user';
+    private static $PASSWORD_URL = 'pass';
+    private static $PATH_URL = 'path';
+
 
     public function __construct()
     {
-        if (count(parse_url(getenv('CLEARDB_DATABASE_URL'))) > 1) {
-            $url = parse_url(getenv('CLEARDB_DATABASE_URL'));
+        if (count(parse_url(getenv(self::$DB_URL))) > 1) {
+            $url = parse_url(getenv(self::$DB_URL));
 
-            $server = $url['host'];
-            $dbusername = $url['user'];
-            $dbpassword = $url['pass'];
-            $db = substr($url['path'], 1);
+            $server = $url[self::$HOST_URL];
+            $dbusername = $url[self::$USER_URL];
+            $dbpassword = $url[self::$PASSWORD_URL];
+            $db = substr($url[self::$PATH_URL ], 1);
 
             $this->dbConnection = mysqli_connect($server, $dbusername, $dbpassword, $db);
-        } 
+        }
     }
 
     public function isDbConnected()
@@ -26,8 +32,10 @@ class Database
         if ($this->dbConnection) {
 
             return true;
+        } else {
+            throw new Exception('Could not connect to the database.');
         }
-        return false;
+       
     }
 
     public function matchLoginUser($username, $password)
@@ -47,7 +55,7 @@ class Database
         }
     }
 
-    public function validateUserRegistration($username, $password, $passwordRepeat)
+    private function validateUserRegistration($username, $password, $passwordRepeat)
     {
         $errorMessage = '';
         $isError = false;
@@ -111,9 +119,9 @@ class Database
         }
     }
 
-    public function registerUser($username, $password)
+    public function registerUser($username, $password, $passwordRepeat)
     {
-
+        $this->validateUserRegistration($username, $password, $passwordRepeat);
         $sql = "INSERT INTO users (username, password) VALUES ('$username', '$password')";
         $result = mysqli_query($this->dbConnection, $sql);
         //$count = mysqli_num_rows($result);

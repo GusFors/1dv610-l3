@@ -24,7 +24,7 @@ class LoginView
 	 *
 	 * @return  void BUT writes to standard output and cookies!
 	 */
-	public function response($message, $storedName)
+	public function response($message)
 	{
 
 
@@ -32,7 +32,7 @@ class LoginView
 		if ($this->userSession->isLoggedIn()) {
 			$response = $this->generateLogoutButtonHTML($message);
 		} else {
-			$response = $this->generateLoginFormHTML($message, $storedName);
+			$response = $this->generateLoginFormHTML($message);
 		}
 
 		//$response .= $this->generateLogoutButtonHTML($message);
@@ -68,8 +68,9 @@ class LoginView
 	 * @param $message, String output message
 	 * @return  void, BUT writes to standard output!
 	 */
-	private function generateLoginFormHTML($message, $storedName = '')
-	{
+	private function generateLoginFormHTML($message)
+	{	
+		$storedName = $this->userSession->getStoredUsername();
 		return '
 			<form action="?" method="post" > 
 				<fieldset>
