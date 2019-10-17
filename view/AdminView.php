@@ -1,6 +1,6 @@
 <?php
 
-class AdminView
+class AdminView // göra moderatorview som adminview extendar med en egen view där promote finns?
 {
     private $userSession;
     private $database;
@@ -17,15 +17,19 @@ class AdminView
         $view = '';
         //TODO add name static and post statics for delete etc
         if ($this->userSession->getSessionUsername() == 'Admin') {
-            $view = '<h1>ADMIN HERE</h1>
-            <p>' . $this->renderUsers() . '</p>
+            $view = '<h2>ADMIN HERE</h2>
+            ' . $this->generateAdminTable() . '
             <form action="" method="post">
+            <br>
+            <legend>Enter user id to edit</legend>
                 <p id="   ">  </p>
                 <input type"number" name="userid" value="" >
                 <input type="submit" name="promote" value="promote"/>
+                <input type="submit" name="demote" value="demote"/>
                 <input type="submit" name="delete" value="delete"/>
-               
-			</form>';
+              
+            </form>
+            ';
         } else {
             $view = '<h1>Not admin</h1>';
         }
@@ -44,7 +48,13 @@ class AdminView
         return isset($_POST['promote']);
     }
 
-    public function getPromoteId() {
+    public function isDemotePost()
+    {
+        return isset($_POST['demote']);
+    }
+
+    public function getPromoteId()
+    {
         return $_POST['userid'];
     }
 
@@ -53,13 +63,13 @@ class AdminView
         return isset($_POST['deleteuser']);
     }
 
-    private function renderUsers()
+    private function generaterUserTable()
     {
-        $users = '';
+        $usersTable = '';
         $userResult = $this->database->getUsers();
         while ($row = $userResult->fetch_assoc()) {
             $userId = $row["id"];
-            $users .= "
+            $usersTable .= "
             <tr>
                 <td> " . $row["username"] . " </td>
                 <td> " . $userId . " </td>
@@ -68,7 +78,11 @@ class AdminView
                </tr> 
             </tr>";
         }
+        return $usersTable;
+    }
 
+    private function generateAdminTable()
+    {
         $table = '<form action="" method="post">
                     <table>
                         <tr>
@@ -77,7 +91,7 @@ class AdminView
                             <th>Role</th>
                         </tr>
                        <tr>
-                            ' . $users . '
+                            ' . $this->generaterUserTable() . '
                        </tr>
                     </table>
                 </form> ';

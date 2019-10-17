@@ -23,6 +23,12 @@ class Database
             $db = substr($url[self::$PATH_URL], 1);
 
             $this->dbConnection = mysqli_connect($server, $dbusername, $dbpassword, $db);
+        } else { // local db connection
+            $localServer = 'localhost';
+            $dbUsername = 'root';
+            $dbPass = '';
+            $dbName = 'phplogin';
+            $this->dbConnection = mysqli_connect($localServer, $dbUsername, $dbPass, $dbName);
         }
     }
 
@@ -39,7 +45,7 @@ class Database
 
     public function matchLoginUser($username, $password)
     {
-        $sql = "SELECT id FROM users WHERE BINARY username = '$username' AND BINARY password = '$password'"; // början av strängen upprepas?
+        $sql = "SELECT id FROM siteusers WHERE BINARY username = '$username' AND BINARY password = '$password'"; // början av strängen upprepas?
 
         $result = mysqli_query($this->dbConnection, $sql);
 
@@ -62,8 +68,15 @@ class Database
         //$this->createUserTable();
     }
 
-    public function promoteUser($id) {
+    public function promoteUser($id)
+    {
         $sql = "UPDATE `siteusers` SET `role` = 'Moderator' WHERE `siteusers`.`id` = $id";
+        $result = mysqli_query($this->dbConnection, $sql);
+    }
+
+    public function demoteUser($id)
+    {
+        $sql = "UPDATE `siteusers` SET `role` = 'User' WHERE `siteusers`.`id` = $id";
         $result = mysqli_query($this->dbConnection, $sql);
     }
 
@@ -72,11 +85,10 @@ class Database
         $sql = "SELECT * FROM `siteusers` ";
         $result = mysqli_query($this->dbConnection, $sql);
         return $result;
-       
-       
     }
 
-    private function createUserTable() {
+    private function createUserTable()
+    {
         $sql = "CREATE TABLE siteusers (
             id int(10) AUTO_INCREMENT,
             username varchar(20) NOT NULL,

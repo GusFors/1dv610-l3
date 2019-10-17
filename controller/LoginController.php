@@ -45,9 +45,10 @@ class LoginController
     public function doLoginView()
     {
         $this->userSession->setCurrentPage(Application::INDEX_PAGE);
-        if ($this->userSession->isRedirect()) { }
+
         $username = $this->loginView->getRequestUsername();
         $password = $this->loginView->getRequestUserPassword();
+
         if ($this->loginView->isLoginSet()) {
 
             if ($this->userSession->isNewLogin()) {
@@ -65,16 +66,13 @@ class LoginController
                 $this->userSession->setByeMessage();
             }
         } else if ($this->adminView->isDeletePost()) {
-            $deleteId = $this->adminView->getUserId();
-            $this->database->deleteUser($deleteId);
-        } else if($this->adminView->isDeleteUser()) {
+            $this->database->deleteUser($this->adminView->getUserId());
+        } else if ($this->adminView->isDeleteUser()) {
             $deleteId = $this->adminView->getUserID();
-            echo $deleteId;
-            //$this->database->deleteUser($deleteId);
         } else if ($this->adminView->isPromotePost()) {
-            $deleteId = $this->adminView->getUserID();
-            $this->database->promoteUser($deleteId);
-            echo 'oipndrxspienin';
+            $this->database->promoteUser($this->adminView->getUserID());
+        } else if ($this->adminView->isDemotePost()) {
+            $this->database->demoteUser($this->adminView->getUserID());
         }
 
         $isLoggedIn = $this->userSession->isLoggedIn();
