@@ -11,10 +11,12 @@ class LoginView
 	private static $keep = 'LoginView::KeepMeLoggedIn';
 	private static $messageId = 'LoginView::Message';
 	private $userSession;
+	private $adminView;
 
-	public function __construct(UserSession $userSession)
+	public function __construct(UserSession $us, AdminView $av)
 	{
-		$this->userSession = $userSession;
+		$this->userSession = $us;
+		$this->adminView = $av;
 	}
 
 	/**
@@ -28,9 +30,11 @@ class LoginView
 	{
 
 
-
+		$response = '';
 		if ($this->userSession->isLoggedIn()) {
 			$response = $this->generateLogoutButtonHTML($message);
+
+			$response .= $this->adminView->generateAdminView();
 		} else {
 			$response = $this->generateLoginFormHTML($message);
 		}
@@ -69,7 +73,7 @@ class LoginView
 	 * @return  void, BUT writes to standard output!
 	 */
 	private function generateLoginFormHTML($message)
-	{	
+	{
 		$storedName = $this->userSession->getStoredUsername();
 		return '
 			<form action="?" method="post" > 
@@ -132,7 +136,7 @@ class LoginView
 		return null;
 	}
 
-	public function isLoggedIn()
+	public function isLoggedIn() // ta bort? o används inte? borde inte vara här
 	{
 		if (isset($_SESSION['username'])) {
 			return true;
@@ -140,4 +144,5 @@ class LoginView
 			return false;
 		}
 	}
+	
 }

@@ -46,13 +46,9 @@ class RegisterView
        </form>';
     }
 
-    public function checkRegisterStatus()
+    public function checkRegisterStatus() : bool // isregister
     {
-        if (isset($_GET['register'])) {
-            return true;
-        } else {
-            return false;
-        }
+        return isset($_GET[Application::REGISTER_PAGE]);
     }
 
     public function getRequestUsername()
@@ -61,7 +57,7 @@ class RegisterView
         if ($this->checkRequestUserName()) {
             return $_POST[self::$name];
         }
-        return null;
+        return null; // ändra null?
     }
 
     private function checkRequestUserName()

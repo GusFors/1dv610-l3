@@ -8,7 +8,7 @@ class DateTimeView
 		//$this->date = $date;
 	}
 
-	public function getWeekDay() // Separate file?
+	public function getWeekDay() // Separate file?, private
 	{
 		return date('l');
 	}

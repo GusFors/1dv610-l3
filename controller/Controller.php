@@ -4,7 +4,7 @@
 
 abstract class Controller
 {
-    private static $INDEX_LOCATION = 'Location: ' . './index.php';
+    private static $INDEX_LOCATION = 'Location: ' . './index.php'; // referera till application index const?
 
     public function goToIndex()
     {

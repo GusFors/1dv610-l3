@@ -4,17 +4,19 @@ class LoginController
 {
     private $loginView;
     private $layoutView;
+    private $adminView;
     private $userSession;
     private $statusMessage = '';
     private $dateTimeView;
     private $database;
 
-    public function __construct(LoginView $lv, UserSession $us, LayoutView $laV, Database $db)
+    public function __construct(LoginView $lv, UserSession $us, LayoutView $laV, Database $db, AdminView $av)
     {
         $this->loginView = $lv;
         $this->userSession = $us;
         $this->layoutView = $laV;
         $this->database = $db;
+        $this->adminView = $av;
     }
 
     public function isLogin()
@@ -41,7 +43,7 @@ class LoginController
     }
 
     public function doLoginView()
-    {   
+    {
         $this->userSession->setCurrentPage(Application::INDEX_PAGE);
         if ($this->userSession->isRedirect()) { }
         $username = $this->loginView->getRequestUsername();
@@ -62,6 +64,17 @@ class LoginController
             if ($wasLoggedIn) {
                 $this->userSession->setByeMessage();
             }
+        } else if ($this->adminView->isDeletePost()) {
+            $deleteId = $this->adminView->getUserId();
+            $this->database->deleteUser($deleteId);
+        } else if($this->adminView->isDeleteUser()) {
+            $deleteId = $this->adminView->getUserID();
+            echo $deleteId;
+            //$this->database->deleteUser($deleteId);
+        } else if ($this->adminView->isPromotePost()) {
+            $deleteId = $this->adminView->getUserID();
+            $this->database->promoteUser($deleteId);
+            echo 'oipndrxspienin';
         }
 
         $isLoggedIn = $this->userSession->isLoggedIn();

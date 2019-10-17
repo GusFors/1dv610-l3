@@ -20,7 +20,7 @@ class Database
             $server = $url[self::$HOST_URL];
             $dbusername = $url[self::$USER_URL];
             $dbpassword = $url[self::$PASSWORD_URL];
-            $db = substr($url[self::$PATH_URL ], 1);
+            $db = substr($url[self::$PATH_URL], 1);
 
             $this->dbConnection = mysqli_connect($server, $dbusername, $dbpassword, $db);
         }
@@ -35,7 +35,6 @@ class Database
         } else {
             throw new Exception('Could not connect to the database.');
         }
-       
     }
 
     public function matchLoginUser($username, $password)
@@ -53,6 +52,41 @@ class Database
             throw new Exception('Wrong name or password');
             return false;
         }
+    }
+
+    public function deleteUser($id)
+    {
+        $sql = "DELETE FROM `siteusers` WHERE `siteusers`.`id` = $id";
+        $result = mysqli_query($this->dbConnection, $sql);
+        echo ("Error description: " . mysqli_error($this->dbConnection));
+        //$this->createUserTable();
+    }
+
+    public function promoteUser($id) {
+        $sql = "UPDATE `siteusers` SET `role` = 'Moderator' WHERE `siteusers`.`id` = $id";
+        $result = mysqli_query($this->dbConnection, $sql);
+    }
+
+    public function getUsers()
+    {
+        $sql = "SELECT * FROM `siteusers` ";
+        $result = mysqli_query($this->dbConnection, $sql);
+        return $result;
+       
+       
+    }
+
+    private function createUserTable() {
+        $sql = "CREATE TABLE siteusers (
+            id int(10) AUTO_INCREMENT,
+            username varchar(20) NOT NULL,
+            password varchar(20) NOT NULL,
+            role varchar(20) NOT NULL,
+            PRIMARY KEY  (id)
+            )";
+        $result = mysqli_query($this->dbConnection, $sql);
+        $sql = "INSERT INTO siteusers (username, password, role) VALUES ('Admin', 'Password', 'Admin')";
+        $result = mysqli_query($this->dbConnection, $sql);
     }
 
     private function validateUserRegistration($username, $password, $passwordRepeat)
@@ -103,7 +137,7 @@ class Database
     {
 
 
-        $sql = "SELECT id FROM users WHERE BINARY username = '$username' ";
+        $sql = "SELECT id FROM siteusers WHERE BINARY username = '$username' ";
 
         $result = mysqli_query($this->dbConnection, $sql);
 
@@ -122,7 +156,7 @@ class Database
     public function registerUser($username, $password, $passwordRepeat)
     {
         $this->validateUserRegistration($username, $password, $passwordRepeat);
-        $sql = "INSERT INTO users (username, password) VALUES ('$username', '$password')";
+        $sql = "INSERT INTO siteusers (username, password, role) VALUES ('$username', '$password', 'User')";
         $result = mysqli_query($this->dbConnection, $sql);
         //$count = mysqli_num_rows($result);
 

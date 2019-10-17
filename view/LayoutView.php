@@ -13,8 +13,8 @@ class LayoutView
     $this->userSession = $userSession;
   }
 
-  public function render($viewToRender, string $statusMessage)
-  {
+  public function render($viewToRender, string $statusMessage) // ta emot från controller statusmessage istället för grab i view
+  { // protesterar den mot h1 assignment 3?
     echo '<!DOCTYPE html>
       <html>
         <head>

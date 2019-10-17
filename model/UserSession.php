@@ -22,6 +22,11 @@ class UserSession
         return isset($_SESSION[self::$LOGIN_NAME]);
     }
 
+    public function getSessionUsername()
+    {
+        return $_SESSION[self::$LOGIN_NAME];
+    }
+
     public function sessionLogin(User $sessionUser)
     {
 
