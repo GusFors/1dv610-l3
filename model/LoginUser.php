@@ -1,5 +1,10 @@
 <?php
 
+require_once('exceptions/MissingNameException.php');
+require_once('exceptions/InvalidNameException.php');
+require_once('exceptions/MissingPasswordException.php');
+require_once('exceptions/PermissionException.php');
+
 class LoginUser
 {
     private $username;
@@ -21,10 +26,10 @@ class LoginUser
     private function setLoginUsername($username)
     {
         if (strlen($username) < self::$MIN_INPUT_VALUE) {
-            throw new Exception('Username is missing'); //TODO make own exception classes
+            throw new MissingNameException('Username is missing'); //TODO make own exception classes
         }
         if ($username != strip_tags($username)) {
-            throw new Exception('Username contains invalid characters.');
+            throw new InvalidNameException('Username contains invalid characters.');
         }
         $this->username = $username;
     }
@@ -32,7 +37,7 @@ class LoginUser
     private function setLoginPassword($password)
     {
         if (strlen($password) < self::$MIN_INPUT_VALUE) {
-            throw new Exception('Password is missing');
+            throw new MissingPasswordException('Password is missing');
         }
         $this->password = $password;
     }
@@ -40,12 +45,12 @@ class LoginUser
     public function setPermission($permission)
     {
         if ($permission == self::BAN_PERMISSION) {
-            throw new Exception('You are currently banned.');
+            throw new PermissionException('You are currently banned.');
         }
         $this->permissionStatus = $permission;
     }
 
-    public function getPermission()
+    public function getPermission(): string
     {
         return $this->permissionStatus;
     }

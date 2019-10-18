@@ -37,7 +37,7 @@ class LayoutView
     ';
   }
 
-  private function renderIsLoggedIn()
+  private function renderIsLoggedIn(): string
   {
     if ($this->userSession->isLoggedIn()) {
       return '<h2>Logged in</h2>';
@@ -46,13 +46,13 @@ class LayoutView
     }
   }
 
-  private function renderNavTagOptions()
+  private function renderNavTagOptions(): string
   {
     if ($this->userSession->isLoggedIn()) {
       return '';
-    } else if ($this->userSession->getCurrentpage() == Application::INDEX_PAGE) {
+    } else if ($this->userSession->getCurrentpage() == Controller::INDEX_PAGE) {
       return '<a href="?register">Register a new user</a>';
-    } else if ($this->userSession->getCurrentpage() == Application::REGISTER_PAGE) {
+    } else if ($this->userSession->getCurrentpage() == Controller::REGISTER_PAGE) {
       return '<a href="?">Back to login</a>';
     }
   }

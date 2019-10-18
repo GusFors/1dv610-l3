@@ -24,11 +24,12 @@ class LoginView
 	 *
 	 * @return  void BUT writes to standard output and cookies!
 	 */
-	public function response($message)
+	public function response($message): string
 	{
 		$response = '';
 		if ($this->userSession->isLoggedIn()) {
 			$response = $this->generateLogoutButtonHTML($message);
+			
 			//Renders extra functionality if user have admin or mod permission
 			if ($this->userSession->getUserPermissions() == LoginUser::ADMIN_PERMISSION || $this->userSession->getUserPermissions() == LoginUser::MOD_PERMISSION) {
 				$response .= $this->adminView->generateAdminView();
@@ -44,7 +45,7 @@ class LoginView
 	 * @param $message, String output message
 	 * @return  void, BUT writes to standard output!
 	 */
-	private function generateLogoutButtonHTML($message)
+	private function generateLogoutButtonHTML($message): string
 	{
 		return '
 			<form action="?" method="post" >
@@ -59,7 +60,7 @@ class LoginView
 	 * @param $message, String output message
 	 * @return  void, BUT writes to standard output!
 	 */
-	private function generateLoginFormHTML($message)
+	private function generateLoginFormHTML($message): string
 	{
 		$storedName = $this->userSession->getStoredUsername();
 		return '
@@ -83,40 +84,35 @@ class LoginView
 		';
 	}
 
-	//CREATE GET-FUNCTIONS TO FETCH REQUEST VARIABLES
-	private function getRequestUserName2()
+	public function isLoginPost(): bool
 	{
-		//RETURN REQUEST VARIABLE: USERNAME
-	}
-
-	public function isLoginPost() //rename with status?
-	{
-
 		return isset($_POST[self::$login]);
 	}
 
-	public function isRemember()
+	public function isRemember(): bool
 	{
 		return isset($_POST[self::$keep]);
 	}
 
-	public function isLogoutPost()
+	public function isLogoutPost(): bool
 	{
 		return isset($_POST[self::$logout]);
 	}
 
 
-	public function getRequestUsername()
+	public function getRequestUsername(): string
 	{
 		if (isset($_POST[self::$name])) {
 			return $_POST[self::$name];
 		}
+		return '';
 	}
 
-	public function getRequestUserPassword()
+	public function getRequestUserPassword(): string
 	{
 		if (isset($_POST[self::$password])) {
 			return $_POST[self::$password];
 		}
+		return '';
 	}
 }

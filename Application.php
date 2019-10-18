@@ -9,6 +9,7 @@ require_once('view/RegisterView.php');
 require_once('view/LayoutView.php');
 require_once('model/UserSession.php');
 require_once('model/UserDatabase.php');
+require_once('model/Date.php');
 
 class Application
 {
@@ -22,16 +23,16 @@ class Application
     private $registerController;
     private $database;
     private $adminView;
-    const REGISTER_PAGE = 'register';
-    const INDEX_PAGE = 'index';
-
+    private $date;
+    
     public function __construct()
     {
         $this->userSession = new UserSession();
         $this->database = new UserDatabase();
         $this->adminView = new AdminView($this->userSession, $this->database);
         $this->loginView = new LoginView($this->userSession, $this->adminView);
-        $this->dateTimeView = new DateTimeView();
+        $this->date = new Date();
+        $this->dateTimeView = new DateTimeView($this->date);
         $this->registerView = new RegisterView($this->userSession);
         $this->layoutView = new Layoutview($this->dateTimeView, $this->userSession);
 

@@ -23,7 +23,7 @@ class UserSession
         return isset($_SESSION[self::$LOGIN_NAME]);
     }
 
-    public function getSessionUsername()
+    public function getSessionUsername(): string
     {
         return $_SESSION[self::$LOGIN_NAME];
     }
@@ -64,7 +64,7 @@ class UserSession
         $this->currentPage = $page;
     }
 
-    public function getCurrentpage()
+    public function getCurrentpage(): string
     {
         return $this->currentPage;
     }
@@ -88,7 +88,7 @@ class UserSession
         $_SESSION[self::$STORED_NAME] = strip_tags($name);
     }
 
-    public function getStoredUsername()
+    public function getStoredUsername(): string
     {
         if (isset($_SESSION[self::$STORED_NAME])) {
             //return strip_tags($_SESSION['storedname']);

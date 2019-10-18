@@ -15,15 +15,13 @@ class RegisterView
         $this->userSession = $userSession;
     }
 
-    public function response($message = '')
+    public function response($message = ''): string
     {
-
-
         $response = $this->generateRegisterFormHTML($message);
         return $response;
     }
 
-    private function generateRegisterFormHTML($message)
+    private function generateRegisterFormHTML($message): string
     {
         $storedName = $this->userSession->getStoredUsername();
         return '<form action="?register" method="post">
@@ -46,9 +44,9 @@ class RegisterView
        </form>';
     }
 
-    public function isRegisterGet(): bool // isregister
+    public function isRegisterGet(): bool
     {
-        return isset($_GET[Application::REGISTER_PAGE]);
+        return isset($_GET[Controller::REGISTER_PAGE]);
     }
 
     public function getRequestUsername(): string
@@ -75,7 +73,7 @@ class RegisterView
         return '';
     }
 
-    public function isRegisterPost()
+    public function isRegisterPost(): bool
     {
         return isset($_POST[self::$register]);
     }

@@ -2,56 +2,16 @@
 
 class DateTimeView
 {
-	private $date;
-	public function __construct()
+	private $dateObj;
+
+	public function __construct(Date $dateObj)
 	{
-		//$this->date = $date;
+		$this->dateObj = $dateObj;
 	}
 
-	public function getWeekDay() // Separate file?, private
+	public function show(): string
 	{
-		return date('l');
-	}
-
-	public function getDateDay()
-	{
-		return date('d');
-	}
-
-	public function getMonth()
-	{
-		return date('F');
-	}
-
-	public function getYear()
-	{
-		return date('Y');
-	}
-
-	public function getHour()
-	{
-		return date('G');
-	}
-
-	public function getMinute()
-	{
-		return date('i');
-	}
-
-	public function getSecond()
-	{
-		return date('s');
-	}
-
-	public function setTimeZone(string $timezone)
-	{
-		date_default_timezone_set($timezone);
-	}
-
-	public function show()
-	{
-		$this->setTimeZone('Europe/Stockholm');
 		$timeString = '';
-		return '<p>' . $timeString . $this->getWeekDay() . ', the ' . $this->getDateDay() . 'th of ' . $this->getMonth() . ' ' . $this->getYear() . ', The time is ' . $this->getHour() . ':' . $this->getMinute() . ':' . $this->getSecond() . '</p>';
+		return '<p>' . $timeString . $this->dateObj->getWeekDay() . ', the ' . $this->dateObj->getDateDay() . 'th of ' . $this->dateObj->getMonth() . ' ' . $this->dateObj->getYear() . ', The time is ' . $this->dateObj->getHour() . ':' . $this->dateObj->getMinute() . ':' . $this->dateObj->getSecond() . '</p>';
 	}
 }

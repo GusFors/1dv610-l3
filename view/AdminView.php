@@ -10,6 +10,7 @@ class AdminView // göra moderatorview som adminview extendar med en egen view d
     private static $ban = 'AdminView::ban';
     private static $unban = 'Adminview::unban';
     private static $userId = 'AdminView::userId';
+    private static $userRole = 'role';
 
 
     public function __construct(UserSession $us, UserDatabase $db)
@@ -45,32 +46,32 @@ class AdminView // göra moderatorview som adminview extendar med en egen view d
         return $ret;
     }
 
-    public function isDeletePost()
+    public function isDeletePost(): bool
     {
         return isset($_POST[self::$delete]);
     }
 
-    public function isPromotePost()
+    public function isPromotePost(): bool
     {
         return isset($_POST[self::$promote]);
     }
 
-    public function isDemotePost()
+    public function isDemotePost(): bool
     {
         return isset($_POST[self::$demote]);
     }
 
-    public function isBanPost()
+    public function isBanPost(): bool
     {
         return isset($_POST[self::$ban]);
     }
 
-    public function isUnbanPost()
+    public function isUnbanPost(): bool
     {
         return isset($_POST[self::$unban]);
     }
 
-    public function getPromoteId()
+    public function getPromoteId(): bool
     {
         return $_POST[self::$userId];
     }
@@ -80,13 +81,13 @@ class AdminView // göra moderatorview som adminview extendar med en egen view d
         $usersTable = '';
         $userResult = $this->database->getUsers();
         while ($row = $userResult->fetch_assoc()) {
-            if ($row["role"] !== LoginUser::ADMIN_PERMISSION) {
+            if ($row[self::$userRole] !== LoginUser::ADMIN_PERMISSION) {
                 $userId = $row["id"];
                 $usersTable .= "
                 <tr>
                     <td> " . $row["username"] . " </td>
                     <td> " . $userId . " </td>
-                    <td> " . $row["role"] . "</td> 
+                    <td> " . $row[self::$userRole] . "</td> 
                 </tr>";
             }
         }
