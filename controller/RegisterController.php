@@ -10,7 +10,7 @@ class RegisterController extends Controller
     private $database;
     private $loginView;
 
-    public function __construct(RegisterView $rv, UserSession $us, LayoutView $laV, Database $db, LoginView $lv)
+    public function __construct(RegisterView $rv, UserSession $us, LayoutView $laV, UserDatabase $db, LoginView $lv)
     {
         $this->registerView = $rv;
         $this->userSession = $us;
@@ -19,43 +19,44 @@ class RegisterController extends Controller
         $this->loginView = $lv;
     }
 
-    public function isRegister()
+    public function isRegisterPage()
     {
-        return $this->registerView->checkRegisterStatus();
+        return $this->registerView->isRegisterGet();
     }
 
     public function doRegisterView()
     {
         $this->userSession->setRegisterPage();
-        $this->userSession->setCurrentPage(Application::REGISTER_PAGE);
-        $redirect = false;
+        $this->userSession->setCurrentPage(Controller::REGISTER_PAGE);
+        $successRedirect = false;
+
         $username = $this->registerView->getRequestUsername();
         $password = $this->registerView->getRequestPassword();
-        if ($this->registerView->checkRegisterRequest()) {
+        $passwordRepeat = $this->registerView->getRequestPasswordRepeat();
 
-
-            $passwordRepeat = $this->registerView->getRequestPasswordRepeat();
-
+        if ($this->registerView->isRegisterPost()) {
             try {
-
                 if ($this->database->registerUser($username, $password, $passwordRepeat)) {
-                    $redirect = true;
+                    $successRedirect = true;
                 }
-                $this->userSession->tryRegister($username, $password, $passwordRepeat);
             } catch (Exception $ex) {
                 $this->userSession->setStatusMessage($ex->getMessage());
             }
         }
+
         $this->userSession->setStoredUsername($username);
-        if ($redirect) {
-            $this->userSession->setRegisterMessage();
 
-            $this->userSession->setRedirect(true);
-            $this->goToIndex();
-
-            //header('Location:http://localhost/1dv610-l3/index.php?');
-        } else {
-            $this->layoutView->render($this->registerView, '', $this->userSession->getStoredUsername());
+        if ($successRedirect) {
+            $this->registrationRedirect();
+         } else {
+            $this->layoutView->render($this->registerView, $this->userSession->grabTemporaryMessage());
         }
+    }
+
+    private function registrationRedirect()
+    {
+        $this->userSession->setRegisterMessage();
+        $this->userSession->setRedirect(true);
+        $this->goToIndex();
     }
 }

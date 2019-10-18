@@ -1,6 +1,6 @@
 <?php
 
-class Database
+class UserDatabase
 {
     private $dbConnection;
     const MIN_USERNAME_LENGTH = 3;
@@ -23,12 +23,7 @@ class Database
             $db = substr($url[self::$PATH_URL], 1);
 
             $this->dbConnection = mysqli_connect($server, $dbusername, $dbpassword, $db);
-        } else { // local db connection
-            $localServer = 'localhost';
-            $dbUsername = 'root';
-            $dbPass = '';
-            $dbName = 'phplogin';
-            $this->dbConnection = mysqli_connect($localServer, $dbUsername, $dbPass, $dbName);
+            $this->createUserTable();
         }
     }
 
@@ -60,12 +55,19 @@ class Database
         }
     }
 
+    public function getUserRole($username)
+    {
+        $sql = "SELECT `role` FROM siteusers WHERE BINARY username = '$username'"; // början av strängen upprepas?
+
+        $result = mysqli_query($this->dbConnection, $sql);
+        $row = $result->fetch_assoc();
+        return ($row["role"]);
+    }
+
     public function deleteUser($id)
     {
         $sql = "DELETE FROM `siteusers` WHERE `siteusers`.`id` = $id";
         $result = mysqli_query($this->dbConnection, $sql);
-        echo ("Error description: " . mysqli_error($this->dbConnection));
-        //$this->createUserTable();
     }
 
     public function promoteUser($id)
@@ -75,6 +77,18 @@ class Database
     }
 
     public function demoteUser($id)
+    {
+        $sql = "UPDATE `siteusers` SET `role` = 'User' WHERE `siteusers`.`id` = $id";
+        $result = mysqli_query($this->dbConnection, $sql);
+    }
+
+    public function banUser($id)
+    {
+        $sql = "UPDATE `siteusers` SET `role` = 'Ban' WHERE `siteusers`.`id` = $id";
+        $result = mysqli_query($this->dbConnection, $sql);
+    }
+
+    public function unbanUser($id)
     {
         $sql = "UPDATE `siteusers` SET `role` = 'User' WHERE `siteusers`.`id` = $id";
         $result = mysqli_query($this->dbConnection, $sql);
@@ -119,6 +133,9 @@ class Database
             $isError = true;
         } else {
             if ($password !== $passwordRepeat) {
+                if ($errorMessage !== '') {
+                    $errorMessage .= '<br>';
+                }
                 $errorMessage .= 'Passwords do not match.';
                 $isError = true;
             }

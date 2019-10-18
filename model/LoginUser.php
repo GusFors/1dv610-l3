@@ -1,18 +1,21 @@
 <?php
 
-class User
+class LoginUser
 {
     private $username;
     private $password;
-    const MIN_USERNAME_LENGTH = 3;
-    const MIN_PASSWORD_LENGTH = 6;
     private static $MIN_INPUT_VALUE = 1;
+    private $permissionStatus;
+    const ADMIN_PERMISSION = 'Admin';
+    const MOD_PERMISSION = 'Moderator';
+    const USER_PERMISSION = 'User';
+    const BAN_PERMISSION = 'Ban';
 
-    public function __construct($username, $password)
+    public function __construct($username, $password, $userPermission)
     {
         $this->setLoginUsername($username);
         $this->setLoginPassword($password);
-     
+        $this->setPermission($userPermission);
     }
 
     private function setLoginUsername($username)
@@ -34,12 +37,22 @@ class User
         $this->password = $password;
     }
 
+    public function setPermission($permission)
+    {
+        if ($permission == self::BAN_PERMISSION) {
+            throw new Exception('You are currently banned.');
+        }
+        $this->permissionStatus = $permission;
+    }
+
+    public function getPermission()
+    {
+        return $this->permissionStatus;
+    }
+
 
     public function getUsername(): string
     {
         return $this->username;
     }
-
-   
-
 }

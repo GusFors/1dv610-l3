@@ -46,47 +46,36 @@ class RegisterView
        </form>';
     }
 
-    public function checkRegisterStatus() : bool // isregister
+    public function isRegisterGet(): bool // isregister
     {
         return isset($_GET[Application::REGISTER_PAGE]);
     }
 
-    public function getRequestUsername()
+    public function getRequestUsername(): string
     {
-
-        if ($this->checkRequestUserName()) {
+        if (isset($_POST[self::$name])) {
             return $_POST[self::$name];
         }
-        return null; // ändra null?
+        return '';
     }
 
-    private function checkRequestUserName()
+    public function getRequestPassword(): string
     {
-        return isset($_POST[self::$name]);
-    }
-
-    private function checkRequestPassword()
-    {
-        return isset($_POST[self::$password]);
-    }
-
-    public function getRequestPassword()
-    {
-        if ($this->checkRequestPassword()) {
+        if (isset($_POST[self::$password])) {
             return $_POST[self::$password];
         }
-        return null;
+        return '';
     }
 
-    public function getRequestPasswordRepeat()
+    public function getRequestPasswordRepeat(): string
     {
         if (isset($_POST[self::$passwordRepeat])) {
             return $_POST[self::$passwordRepeat];
-        }
-        return null;
+        };
+        return '';
     }
 
-    public function checkRegisterRequest()
+    public function isRegisterPost()
     {
         return isset($_POST[self::$register]);
     }

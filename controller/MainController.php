@@ -1,32 +1,22 @@
 <?php
 
-class MainController
-{
+require_once('Controller.php');
 
+class MainController extends Controller
+{
     private $loginController;
     private $registerController;
-    private $userSession;
-    private $layoutView;
-
-
-
-    public function __construct(LoginController $loginController, RegisterController $registerController, UserSession $us, LayoutView $lv)
+   
+    public function __construct(LoginController $loginController, RegisterController $registerController)
     {
         $this->loginController = $loginController;
         $this->registerController = $registerController;
-        $this->userSession = $us;
-        $this->layoutView = $lv;
         // $this->dateTimeView = $dateTimeView;
-
-
     }
 
     public function viewRenderOptions()
     {
-        //if ($this->userSession->isRedirect()) {
-        //  $this->loginController->doLoginView();
-        //} else 
-        if ($this->registerController->isRegister()) {
+        if ($this->registerController->isRegisterPage()) {
             $this->registerController->doRegisterView();
         } else {
             $this->loginController->doLoginView();

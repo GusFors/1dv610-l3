@@ -8,7 +8,7 @@ require_once('view/DateTimeView.php');
 require_once('view/RegisterView.php');
 require_once('view/LayoutView.php');
 require_once('model/UserSession.php');
-require_once('model/Database.php');
+require_once('model/UserDatabase.php');
 
 class Application
 {
@@ -28,7 +28,7 @@ class Application
     public function __construct()
     {
         $this->userSession = new UserSession();
-        $this->database = new Database();
+        $this->database = new UserDatabase();
         $this->adminView = new AdminView($this->userSession, $this->database);
         $this->loginView = new LoginView($this->userSession, $this->adminView);
         $this->dateTimeView = new DateTimeView();

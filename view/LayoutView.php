@@ -28,7 +28,7 @@ class LayoutView
         
           
           <div class="container">
-              ' . $viewToRender->response($this->userSession->grabTemporaryMessage()) . '
+              ' . $viewToRender->response($statusMessage) . '
               
               ' . $this->dayTimeView->show() . '
           </div>

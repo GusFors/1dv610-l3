@@ -1,16 +1,16 @@
 <?php
 
-class LoginController
+require_once('Controller.php');
+
+class LoginController extends Controller
 {
     private $loginView;
     private $layoutView;
     private $adminView;
     private $userSession;
-    private $statusMessage = '';
-    private $dateTimeView;
     private $database;
 
-    public function __construct(LoginView $lv, UserSession $us, LayoutView $laV, Database $db, AdminView $av)
+    public function __construct(LoginView $lv, UserSession $us, LayoutView $laV, UserDatabase $db, AdminView $av)
     {
         $this->loginView = $lv;
         $this->userSession = $us;
@@ -19,77 +19,78 @@ class LoginController
         $this->adminView = $av;
     }
 
-    public function isLogin()
+    public function doLoginView()
     {
-        return $this->loginView->isLoginSet();
+        $this->userSession->setCurrentPage(Controller::INDEX_PAGE);
+
+        if ($this->loginView->isLoginPost()) {
+            $this->loginHandler();
+        } else if ($this->loginView->isLogoutPost()) {
+            $this->logoutHandler();
+        } else if ($this->adminView->isDeletePost()) {
+            $this->database->deleteUser($this->adminView->getUserId());
+        } else if ($this->adminView->isPromotePost()) {
+            $this->database->promoteUser($this->adminView->getUserId());
+        } else if ($this->adminView->isDemotePost()) {
+            $this->database->demoteUser($this->adminView->getUserId());
+        } else if ($this->adminView->isBanPost()) {
+            $this->database->banUser($this->adminView->getUserId());
+        } else if ($this->adminView->isUnbanPost()) {
+            $this->database->unbanUser($this->adminView->getUserId());
+        }
+        $this->ifBeenRedirected();
+
+        $this->layoutView->render($this->loginView, $this->userSession->grabTemporaryMessage());
     }
 
-    public function isLogOut()
+    private function loginUser($username, $password)
     {
-        return $this->loginView->getLogoutPost();
-    }
-
-    public function loginUser($username, $password)
-    {
-
         try {
             $this->database->isDbConnected();
-            $tryUser = new User($username, $password);
+            $userPermission = $this->database->getUserRole($username);
+            $tryUser = new LoginUser($username, $password, $userPermission);
             $this->database->matchLoginUser($username, $password);
+            $tryUser->setPermission($this->database->getUserRole($username));
             $this->userSession->sessionLogin($tryUser);
         } catch (Exception $ex) {
             $this->userSession->setStatusMessage($ex->getMessage());
         }
     }
 
-    public function doLoginView()
+    private function loginMsgHandler()
     {
-        $this->userSession->setCurrentPage(Application::INDEX_PAGE);
-
-        $username = $this->loginView->getRequestUsername();
-        $password = $this->loginView->getRequestUserPassword();
-
-        if ($this->loginView->isLoginSet()) {
-
-            if ($this->userSession->isNewLogin()) {
-                if ($this->loginView->isRemember()) {
-                    $this->userSession->setRememberMessage();
-                } else {
-                    $this->userSession->setWelcomeMessage();
-                }
-            }
-            $this->loginUser($username, $password);
-        } else if ($this->isLogOut()) {
-            $wasLoggedIn = $this->userSession->isLoggedIn();
-            $this->userSession->logoutUser();
-            if ($wasLoggedIn) {
-                $this->userSession->setByeMessage();
-            }
-        } else if ($this->adminView->isDeletePost()) {
-            $this->database->deleteUser($this->adminView->getUserId());
-        } else if ($this->adminView->isDeleteUser()) {
-            $deleteId = $this->adminView->getUserID();
-        } else if ($this->adminView->isPromotePost()) {
-            $this->database->promoteUser($this->adminView->getUserID());
-        } else if ($this->adminView->isDemotePost()) {
-            $this->database->demoteUser($this->adminView->getUserID());
-        }
-
-        $isLoggedIn = $this->userSession->isLoggedIn();
-
-        if ($isLoggedIn == false) {
-            if ($this->userSession->isRedirect() == false) {
-                $this->userSession->setStoredUsername($username);
+        if ($this->userSession->isNewLogin()) {
+            if ($this->loginView->isRemember()) {
+                $this->userSession->setRememberMessage();
             } else {
-                $this->userSession->setRedirect(false);
+                $this->userSession->setWelcomeMessage();
             }
         }
-
-        $this->layoutView->render($this->loginView, '', $this->userSession->getStoredUsername());
     }
 
-    public function logoutUser()
+    private function loginHandler()
     {
+        $username = $this->loginView->getRequestUsername();
+        $password = $this->loginView->getRequestUserPassword();
+        $this->loginMsgHandler();
+        $this->loginUser($username, $password);
+    }
+
+    private function logoutHandler()
+    {
+        $wasLoggedIn = $this->userSession->isLoggedIn();
         $this->userSession->logoutUser();
+        if ($wasLoggedIn) {
+            $this->userSession->setByeMessage();
+        }
+    }
+
+    private function ifBeenRedirected()
+    {
+        if ($this->userSession->isRedirect() == false) {
+            $this->userSession->setStoredUsername($this->loginView->getRequestUsername());
+        } else {
+            $this->userSession->setRedirect(false);
+        }
     }
 }

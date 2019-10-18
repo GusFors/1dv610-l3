@@ -1,5 +1,5 @@
 <?php
-require_once('User.php');
+require_once('LoginUser.php');
 
 class UserSession
 {
@@ -7,9 +7,10 @@ class UserSession
     private $currentUser;
     private static $LOGIN_NAME = 'loginName'; //TODO ändra till privata variabler
     private static $STORED_MESSAGE = 'storedMessage';
-    private static $STORED_NAME = 'storedname';
-    private static $REGISTER_PAGE = 'registerpage';
+    private static $STORED_NAME = 'storedName';
+    private static $REGISTER_PAGE = 'registerPage';
     private static $SESSION_REDIRECT_STATUS = 'redirect';
+    private static $USER_PERMISSIONS = 'permission';
     private $currentPage;
 
     public function __construct()
@@ -27,13 +28,12 @@ class UserSession
         return $_SESSION[self::$LOGIN_NAME];
     }
 
-    public function sessionLogin(User $sessionUser)
+    public function sessionLogin(LoginUser $sessionUser)
     {
 
-        $this->currentUser = $sessionUser;
         //$this->currentUser->authorizeUser($username, $password);
-
-        $_SESSION[self::$LOGIN_NAME] = $this->currentUser->getUsername();
+        $_SESSION[self::$LOGIN_NAME] = $sessionUser->getUsername();
+        $_SESSION[self::$USER_PERMISSIONS] = $sessionUser->getPermission();
     }
 
     public function loginUser()
@@ -44,6 +44,11 @@ class UserSession
     public function logoutUser()
     {
         $_SESSION = [];
+    }
+
+    public function getUserPermissions(): string
+    {
+        return $_SESSION[self::$USER_PERMISSIONS];
     }
 
     public function isNewLogin()
@@ -76,12 +81,6 @@ class UserSession
         } else {
             return false;
         }
-    }
-
-    public function tryRegister($username, $password, $passwordRepeat) // onödig?
-    {
-        //$this->currentUser = new User($username, $password); // flytta?
-        //$this->currentUser->registerUser($username, $password, $passwordRepeat);
     }
 
     public function setStoredUsername($name)
@@ -141,7 +140,7 @@ class UserSession
         $_SESSION[self::$SESSION_REDIRECT_STATUS] = $isRedir;
     }
 
-    public function isRedirect()
+    public function isRedirect(): bool
     {
         if (isset($_SESSION[self::$SESSION_REDIRECT_STATUS])) {
             return  $_SESSION[self::$SESSION_REDIRECT_STATUS];

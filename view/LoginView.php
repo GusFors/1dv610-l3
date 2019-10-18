@@ -6,8 +6,6 @@ class LoginView
 	private static $logout = 'LoginView::Logout';
 	private static $name = 'LoginView::UserName';
 	private static $password = 'LoginView::Password';
-	private static $cookieName = 'LoginView::CookieName';
-	private static $cookiePassword = 'LoginView::CookiePassword';
 	private static $keep = 'LoginView::KeepMeLoggedIn';
 	private static $messageId = 'LoginView::Message';
 	private $userSession;
@@ -28,28 +26,17 @@ class LoginView
 	 */
 	public function response($message)
 	{
-
-
 		$response = '';
 		if ($this->userSession->isLoggedIn()) {
 			$response = $this->generateLogoutButtonHTML($message);
-
-			$response .= $this->adminView->generateAdminView();
+			//Renders extra functionality if user have admin or mod permission
+			if ($this->userSession->getUserPermissions() == LoginUser::ADMIN_PERMISSION || $this->userSession->getUserPermissions() == LoginUser::MOD_PERMISSION) {
+				$response .= $this->adminView->generateAdminView();
+			}
 		} else {
 			$response = $this->generateLoginFormHTML($message);
 		}
-
-		//$response .= $this->generateLogoutButtonHTML($message);
 		return $response;
-	}
-
-	private function renderIsLoggedIn()
-	{
-		if ($this->userSession->isLoggedIn()) {
-			return '<h2>Logged in</h2>';
-		} else {
-			return '<h2>Not logged in</h2>';
-		}
 	}
 
 	/**
@@ -102,7 +89,7 @@ class LoginView
 		//RETURN REQUEST VARIABLE: USERNAME
 	}
 
-	public function isLoginSet() //rename with status?
+	public function isLoginPost() //rename with status?
 	{
 
 		return isset($_POST[self::$login]);
@@ -113,7 +100,7 @@ class LoginView
 		return isset($_POST[self::$keep]);
 	}
 
-	public function getLogoutPost()
+	public function isLogoutPost()
 	{
 		return isset($_POST[self::$logout]);
 	}
@@ -122,10 +109,8 @@ class LoginView
 	public function getRequestUsername()
 	{
 		if (isset($_POST[self::$name])) {
-
 			return $_POST[self::$name];
 		}
-		return null;
 	}
 
 	public function getRequestUserPassword()
@@ -133,16 +118,5 @@ class LoginView
 		if (isset($_POST[self::$password])) {
 			return $_POST[self::$password];
 		}
-		return null;
 	}
-
-	public function isLoggedIn() // ta bort? o används inte? borde inte vara här
-	{
-		if (isset($_SESSION['username'])) {
-			return true;
-		} else {
-			return false;
-		}
-	}
-	
 }
