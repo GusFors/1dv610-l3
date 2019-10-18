@@ -23,7 +23,8 @@ class UserDatabase
             $db = substr($url[self::$PATH_URL], 1);
 
             $this->dbConnection = mysqli_connect($server, $dbusername, $dbpassword, $db);
-            $this->deleteTable();
+            //$this->deleteTable();
+            $this->createUserTable();
         } 
     }
 
@@ -103,7 +104,7 @@ class UserDatabase
 
     private function createUserTable()
     {
-        $sql = "CREATE TABLE siteusers (
+        $sql = "CREATE TABLE IF NOT EXISTS siteusers (
             id int(10) AUTO_INCREMENT,
             username varchar(20) NOT NULL,
             password varchar(20) NOT NULL,
