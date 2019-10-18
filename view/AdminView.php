@@ -22,10 +22,8 @@ class AdminView // göra moderatorview som adminview extendar med en egen view d
     {
         $view = '<h2>' . $this->userSession->getUserPermissions() . ' options' . '</h2>
             ' . $this->generateAdminTable() . '
-            <form action="" method="post">
+            <form method="post">
             <br>
-            <legend>Enter user id to edit</legend>
-                <p id="   ">  </p>
                ' . $this->generateModOrAdminOptions() . '
             </form>';
 
@@ -35,11 +33,11 @@ class AdminView // göra moderatorview som adminview extendar med en egen view d
 
     private function generateModOrAdminOptions(): string
     {
-        $ret = '<input type"number" name="' . self::$userId . '" value="" >
+        $ret = '<input type="text" name="' . self::$userId . '" placeholder="Enter user id to edit" >
         <input type="submit" name="' . self::$ban . '" value="ban"/>
         <input type="submit" name="' . self::$unban . '" value="unban"/>
         <input type="submit" name="' . self::$delete . '" value="delete"/>';
-        
+
         if ($this->userSession->getUserPermissions() == LoginUser::ADMIN_PERMISSION) {
             $ret .= '<input type="submit" name="' . self::$promote . '" value="promote"/>
                     <input type="submit" name="' . self::$demote . '" value="demote"/>';
@@ -103,9 +101,9 @@ class AdminView // göra moderatorview som adminview extendar med en egen view d
                         <th>Id</th>
                         <th>Role</th>
                     </tr>
-                    <tr>
+                    
                         ' . $this->generaterUserTable() . '
-                    </tr>
+                   
                 </table>
                  ';
 

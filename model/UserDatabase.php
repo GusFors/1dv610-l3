@@ -23,9 +23,8 @@ class UserDatabase
             $db = substr($url[self::$PATH_URL], 1);
 
             $this->dbConnection = mysqli_connect($server, $dbusername, $dbpassword, $db);
-            //$this->deleteTable();
-            //$this->createUserTable();
-        } 
+           
+        }
     }
 
     public function isDbConnected()
