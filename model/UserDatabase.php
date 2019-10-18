@@ -23,8 +23,8 @@ class UserDatabase
             $db = substr($url[self::$PATH_URL], 1);
 
             $this->dbConnection = mysqli_connect($server, $dbusername, $dbpassword, $db);
-            //$this->createUserTable();
-        }
+            $this->deleteTable();
+        } 
     }
 
     public function isDbConnected()
@@ -193,5 +193,11 @@ class UserDatabase
 
 
         return $result;
+    }
+
+    private function deleteTable() {
+        $sql = "DROP TABLE siteusers";
+
+        $result = mysqli_query($this->dbConnection, $sql);
     }
 }
