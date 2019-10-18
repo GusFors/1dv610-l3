@@ -10,7 +10,7 @@ class UserDatabase
     private static $USER_URL = 'user';
     private static $PASSWORD_URL = 'pass';
     private static $PATH_URL = 'path';
-
+    private static $USER_TABLE = 'siteusers';
 
     public function __construct()
     {
@@ -24,7 +24,7 @@ class UserDatabase
 
             $this->dbConnection = mysqli_connect($server, $dbusername, $dbpassword, $db);
            
-        }
+        } 
     }
 
     public function isDbConnected()
