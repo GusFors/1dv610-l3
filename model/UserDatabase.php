@@ -24,7 +24,7 @@ class UserDatabase
 
             $this->dbConnection = mysqli_connect($server, $dbusername, $dbpassword, $db);
             //$this->deleteTable();
-            $this->createUserTable();
+            //$this->createUserTable();
         } 
     }
 
