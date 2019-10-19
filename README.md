@@ -52,13 +52,11 @@ If you would rather test it locally follow these steps:
 
 ### Alternate scenarios
 * 3b. User provides admin credentials.
-    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1. The system authenticates the user and presents extra admin options
-    <br>
+  * 1. The system authenticates the user and presents extra admin options
 * 3c. User provides moderator credentials.
-    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1. The system authenticates the user and presents extra moderator options
-    <br>
+  * 1. The system authenticates the user and presents extra moderator options
 * 4b. User provides banned user credentials.
-    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1. The system presents a ban error message
+  * 1. The system presents a ban error message
 
 <br>
 
