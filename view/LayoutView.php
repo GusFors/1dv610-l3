@@ -13,8 +13,8 @@ class LayoutView
     $this->userSession = $userSession;
   }
 
-  public function render($viewToRender, string $statusMessage) // ta emot från controller statusmessage istället för grab i view
-  { // protesterar den mot h1 assignment 3?
+  public function render($viewToRender, string $statusMessage)
+  {
     echo '<!DOCTYPE html>
       <html>
         <head>
@@ -22,7 +22,7 @@ class LayoutView
           <title>Login Example</title>
         </head>
         <body>
-          <h1>Assignment 3</h1>
+          <h1>Assignment L3</h1>
           ' . $this->renderNavTagOptions() . '
           ' . $this->renderIsLoggedIn() . '
         

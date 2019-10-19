@@ -33,7 +33,7 @@ $db = YOUR_DB_NAME_HERE;
 
 $this->dbConnection = mysqli_connect($server, $dbusername, $dbpassword, $db);
 ```
-(It is recommended to load these variables from either a gitignored file or your local environment variables).
+(It is recommended to load these variables from either a gitignored class file or your local environment variables).
 * Go to localhost/YOUR_FOLDER_IN_HTDOCS.php
 
 <br>
@@ -120,7 +120,7 @@ UC1. 3b User provides authenticated admin credentials.
 
  #### Output
  * A table containing registred users should be displayed with a header containing the text "Admin options"
- along with an inputfield with ban/delete/promote/demote options.
+ along with an inputfield with ban/unban/delete/promote/demote options.
 
 <br>
 

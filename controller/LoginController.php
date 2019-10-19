@@ -38,8 +38,9 @@ class LoginController extends Controller
     private function adminOptions()
     {
         try {
+            //TODO: Add feedback/status message on actions and avoid too many else if to read clearly
             if ($this->adminView->isDeletePost()) {
-                $this->database->deleteUser($this->adminView->getUserId()); //TODO: Add feedback/status message on actions and avoid too many else if to read clearly
+                $this->database->deleteUser($this->adminView->getUserId());
             } else if ($this->adminView->isPromotePost()) {
                 $this->database->promoteUser($this->adminView->getUserId());
             } else if ($this->adminView->isDemotePost()) {
@@ -60,8 +61,10 @@ class LoginController extends Controller
             $this->database->isDbConnected();
             $userPermission = $this->database->getUserRole($username);
             $tryUser = new LoginUser($username, $password, $userPermission);
+
             $this->database->matchLoginUser($username, $password);
             $tryUser->setPermission($this->database->getUserRole($username));
+
             $this->userSession->sessionLogin($tryUser);
         } catch (Exception $ex) {
             $this->userSession->setTemporaryMessage($ex->getMessage());
@@ -96,6 +99,7 @@ class LoginController extends Controller
         }
     }
 
+    // Makes sure that saved username from registerpage is not cleared after registration
     private function ifBeenRedirected()
     {
         if ($this->userSession->isRedirect() == false) {

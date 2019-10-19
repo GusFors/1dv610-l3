@@ -26,7 +26,7 @@ class LoginUser
     private function setLoginUsername($username)
     {
         if (strlen($username) < self::$MIN_INPUT_VALUE) {
-            throw new MissingNameException('Username is missing'); //TODO make own exception classes
+            throw new MissingNameException('Username is missing');
         }
         if ($username != strip_tags($username)) {
             throw new InvalidNameException('Username contains invalid characters.');

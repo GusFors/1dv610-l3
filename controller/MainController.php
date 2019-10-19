@@ -2,8 +2,6 @@
 
 require_once('Controller.php');
 
-//TODO Namespaces
-
 class MainController extends Controller
 {
     private $loginController;
@@ -13,7 +11,6 @@ class MainController extends Controller
     {
         $this->loginController = $loginController;
         $this->registerController = $registerController;
-        // $this->dateTimeView = $dateTimeView;
     }
 
     public function viewRenderOptions()

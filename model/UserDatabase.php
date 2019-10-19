@@ -3,7 +3,7 @@
 require_once('exceptions/DbConnectionException.php');
 require_once('exceptions/InvalidMatchException.php');
 
-//TODO: wrap database to make storing users "interface" less dependent on a sql database, add more statics for sql statements, and add exceptions to some functions
+//TODO: wrap database for less dependency on a sql database and add exceptions to some functions
 class UserDatabase
 {
     private $dbConnection;
@@ -38,7 +38,7 @@ class UserDatabase
     }
 
 
-    public function getUsers()
+    public function getUsers(): mysqli_result
     {
         $sql = "SELECT * FROM  " . self::$USER_TABLE . "  ";
         $result = mysqli_query($this->dbConnection, $sql);
@@ -46,10 +46,11 @@ class UserDatabase
         if ($result == false) {
             throw new InvalidMatchException('Could find/get the users.');
         }
+
         return $result;
     }
 
-    public function getUserRole($username)
+    public function getUserRole($username): string
     {
         $sql = "SELECT " . self::$USER_ROLE . " FROM  " . self::$USER_TABLE . "  WHERE BINARY username = '$username'";
         $result = mysqli_query($this->dbConnection, $sql);
@@ -57,12 +58,16 @@ class UserDatabase
         if ($result == false) {
             throw new InvalidMatchException('Could not get selected user.');
         }
+
         $row = $result->fetch_assoc();
-        return ($row[self::$USER_ROLE]);
+        if ($row) {
+            return ($row[self::$USER_ROLE]);
+        }
+        return '';
     }
 
     public function isDbConnected(): bool
-    { // flytta ngt liknande till konstruktor?
+    {
         if ($this->dbConnection) {
             return true;
         } else {
@@ -84,7 +89,30 @@ class UserDatabase
         }
     }
 
+    public function isUsernameTaken($username): bool
+    {
+        $sql = "SELECT id FROM  " . self::$USER_TABLE . "  WHERE BINARY username = '$username' ";
+        $result = mysqli_query($this->dbConnection, $sql);
+
+        $match = mysqli_num_rows($result);
+
+        if ($match == 1) {
+            return true;
+        } else if ($match == 0) {
+            return false;
+        }
+    }
+
     //TODO: add exceptions for non successful attempts/results with effected rows function
+    public function registerUser($username, $password, $passwordRepeat)
+    {
+        $this->isDbConnected();
+        $this->validateUserRegistration($username, $password, $passwordRepeat);
+
+        $sql = "INSERT INTO  " . self::$USER_TABLE . "  (username, password, " . self::$USER_ROLE . ") VALUES ('$username', '$password', 'User')";
+        $result = mysqli_query($this->dbConnection, $sql);
+    }
+
     public function deleteUser($id)
     {
         $sql = "DELETE FROM  " . self::$USER_TABLE . "  WHERE  " . self::$USER_TABLE . " .`id` = $id";
@@ -115,21 +143,7 @@ class UserDatabase
         $result = mysqli_query($this->dbConnection, $sql);
     }
 
-    private function createUserTable()
-    {
-        $sql = "CREATE TABLE IF NOT EXISTS  " . self::$USER_TABLE . "  (
-            id int(10) AUTO_INCREMENT,
-            username varchar(20) NOT NULL,
-            password varchar(20) NOT NULL,
-            role varchar(20) NOT NULL,
-            PRIMARY KEY  (id)
-            )";
-        $result = mysqli_query($this->dbConnection, $sql);
-        $sql = "INSERT INTO  " . self::$USER_TABLE . "  (username, password, role) VALUES ('Admin', 'Password', 'Admin')";
-        $result = mysqli_query($this->dbConnection, $sql);
-    }
-
-    //TODO: make function smaller and avoid the ifs, especially for adding <br>
+    //TODO: make function smaller and avoid the ifs, especially for adding <br or move user registration validation to an own class much like "LoginUser">
     private function validateUserRegistration($username, $password, $passwordRepeat)
     {
         $errorMessage = '';
@@ -164,7 +178,7 @@ class UserDatabase
             $isError = true;
         }
 
-        if ($this->isUserTaken($username)) {
+        if ($this->isUsernameTaken($username)) {
             if ($errorMessage !== '') {
                 $errorMessage .= '<br>';
             }
@@ -175,36 +189,5 @@ class UserDatabase
         if ($isError) {
             throw new Exception($errorMessage);
         }
-    }
-
-    // Checks if a given username is taken
-    public function isUserTaken($username): bool
-    {
-        $sql = "SELECT id FROM  " . self::$USER_TABLE . "  WHERE BINARY username = '$username' ";
-        $result = mysqli_query($this->dbConnection, $sql);
-
-        $match = mysqli_num_rows($result);
-
-        if ($match == 1) {
-            return true;
-        } else if ($match == 0) {
-            return false;
-        }
-    }
-
-    public function registerUser($username, $password, $passwordRepeat)
-    {
-        $this->isDbConnected();
-        $this->validateUserRegistration($username, $password, $passwordRepeat);
-
-        $sql = "INSERT INTO  " . self::$USER_TABLE . "  (username, password, " . self::$USER_ROLE . ") VALUES ('$username', '$password', 'User')";
-        $result = mysqli_query($this->dbConnection, $sql);
-        return $result;
-    }
-
-    private function deleteTable()
-    {
-        $sql = "DROP TABLE  " . self::$USER_TABLE . " ";
-        $result = mysqli_query($this->dbConnection, $sql);
     }
 }

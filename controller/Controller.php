@@ -1,10 +1,10 @@
 <?php
 
-//TODO add common functionality/members between controllers
+//TODO add common functionality/members between controllers and namespaces
 
 abstract class Controller
 {
-    private static $INDEX_LOCATION = 'Location: ./' . self::INDEX_PAGE . '.php'; // referera till application index const?
+    private static $INDEX_LOCATION = 'Location: ./' . self::INDEX_PAGE . '.php';
     const REGISTER_PAGE = 'register';
     const INDEX_PAGE = 'index';
 

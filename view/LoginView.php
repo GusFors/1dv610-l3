@@ -17,20 +17,12 @@ class LoginView
 		$this->adminView = $av;
 	}
 
-	/**
-	 * Create HTTP response
-	 *
-	 * Should be called after a login attempt has been determined
-	 *
-	 * @return  void BUT writes to standard output and cookies!
-	 */
 	public function response($message): string
 	{
 		$response = '';
 		if ($this->userSession->isLoggedIn()) {
 			$response = $this->generateLogoutButtonHTML($message);
-			
-			//Renders extra functionality if user have admin or mod permission
+
 			if ($this->userSession->getUserPermissions() == LoginUser::ADMIN_PERMISSION || $this->userSession->getUserPermissions() == LoginUser::MOD_PERMISSION) {
 				$response .= $this->adminView->generateAdminView();
 			}
@@ -40,11 +32,6 @@ class LoginView
 		return $response;
 	}
 
-	/**
-	 * Generate HTML code on the output buffer for the logout button
-	 * @param $message, String output message
-	 * @return  void, BUT writes to standard output!
-	 */
 	private function generateLogoutButtonHTML($message): string
 	{
 		return '
@@ -55,11 +42,6 @@ class LoginView
 		';
 	}
 
-	/**
-	 * Generate HTML code on the output buffer for the logout button
-	 * @param $message, String output message
-	 * @return  void, BUT writes to standard output!
-	 */
 	private function generateLoginFormHTML($message): string
 	{
 		$storedName = $this->userSession->getStoredUsername();
@@ -98,7 +80,6 @@ class LoginView
 	{
 		return isset($_POST[self::$logout]);
 	}
-
 
 	public function getRequestUsername(): string
 	{

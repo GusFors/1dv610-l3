@@ -69,27 +69,9 @@ class AdminView
         return isset($_POST[self::$unban]);
     }
 
-    public function getPromoteId(): bool
+    public function getUserId(): string
     {
         return $_POST[self::$userId];
-    }
-
-    private function generaterUserTable(): string
-    {
-        $usersTable = '';
-        $userResult = $this->database->getUsers();
-        while ($row = $userResult->fetch_assoc()) {
-            if ($row[self::$userRole] !== LoginUser::ADMIN_PERMISSION) {
-                $userId = $row["id"];
-                $usersTable .= "
-                <tr>
-                    <td> " . $row["username"] . " </td>
-                    <td> " . $userId . " </td>
-                    <td> " . $row[self::$userRole] . "</td> 
-                </tr>";
-            }
-        }
-        return $usersTable;
     }
 
     private function generateAdminTable(): string
@@ -107,8 +89,22 @@ class AdminView
         return $table;
     }
 
-    public function getUserId(): string
+    private function generaterUserTable(): string
     {
-        return $_POST[self::$userId];
+        $usersTable = '';
+        $userResult = $this->database->getUsers();
+        
+        while ($row = $userResult->fetch_assoc()) {
+            if ($row[self::$userRole] !== LoginUser::ADMIN_PERMISSION) {
+                $userId = $row["id"];
+                $usersTable .= "
+                <tr>
+                    <td> " . $row["username"] . " </td>
+                    <td> " . $userId . " </td>
+                    <td> " . $row[self::$userRole] . "</td> 
+                </tr>";
+            }
+        }
+        return $usersTable;
     }
 }
