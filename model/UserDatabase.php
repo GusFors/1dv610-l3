@@ -21,7 +21,6 @@ class UserDatabase
     {
         if (count(parse_url(getenv(self::$DB_URL))) > 1) {
             $url = parse_url(getenv(self::$DB_URL));
-
             $server = $url[self::$HOST_URL];
             $dbusername = $url[self::$USER_URL];
             $dbpassword = $url[self::$PASSWORD_URL];
@@ -35,6 +34,7 @@ class UserDatabase
     {
         $sql = "SELECT * FROM  " . self::$USER_TABLE . "  ";
         $result = mysqli_query($this->dbConnection, $sql);
+
         if($result == false) {
             throw new InvalidMatchException('Could find/get the users.');
         }
@@ -45,6 +45,7 @@ class UserDatabase
     {
         $sql = "SELECT " . self::$USER_ROLE . " FROM  " . self::$USER_TABLE . "  WHERE BINARY username = '$username'";
         $result = mysqli_query($this->dbConnection, $sql);
+
         if($result == false) {
             throw new InvalidMatchException('Could not get selected user.');
         }
@@ -64,7 +65,6 @@ class UserDatabase
     public function matchLoginUser($username, $password): bool
     {
         $sql = "SELECT id FROM " . self::$USER_TABLE . " WHERE BINARY username = '$username' AND BINARY password = '$password'";
-
         $result = mysqli_query($this->dbConnection, $sql);
 
         $match = mysqli_num_rows($result);
@@ -174,7 +174,6 @@ class UserDatabase
     public function isUserTaken($username): bool
     {
         $sql = "SELECT id FROM  " . self::$USER_TABLE . "  WHERE BINARY username = '$username' ";
-
         $result = mysqli_query($this->dbConnection, $sql);
 
         $match = mysqli_num_rows($result);
@@ -190,6 +189,7 @@ class UserDatabase
     {
         $this->isDbConnected();
         $this->validateUserRegistration($username, $password, $passwordRepeat);
+
         $sql = "INSERT INTO  " . self::$USER_TABLE . "  (username, password, " . self::$USER_ROLE . ") VALUES ('$username', '$password', 'User')";
         $result = mysqli_query($this->dbConnection, $sql);
         return $result;
