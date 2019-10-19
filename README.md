@@ -26,12 +26,12 @@ If you would rather test it locally follow these steps:
   
 ```
 
-            $server = "YOUR_SERVER_HOSTURL_HERE";
-            $dbusername = YOUR_DB_USERNAME_HERE;
-            $dbpassword = YOUR_DB_PASSWORD_HERE;
-            $db = YOUR_DB_NAME_HERE;
+$server = "YOUR_SERVER_HOSTURL_HERE";
+$dbusername = YOUR_DB_USERNAME_HERE;
+$dbpassword = YOUR_DB_PASSWORD_HERE;
+$db = YOUR_DB_NAME_HERE;
 
-            $this->dbConnection = mysqli_connect($server, $dbusername, $dbpassword, $db);
+$this->dbConnection = mysqli_connect($server, $dbusername, $dbpassword, $db);
 ```
 (It is recommended to load these variables from either a gitignored file or your local environment variables).
 * Go to localhost/YOUR_FOLDER_IN_HTDOCS.php
