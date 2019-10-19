@@ -27,20 +27,31 @@ class LoginController extends Controller
             $this->loginHandler();
         } else if ($this->loginView->isLogoutPost()) {
             $this->logoutHandler();
-        } else if ($this->adminView->isDeletePost()) {
-            $this->database->deleteUser($this->adminView->getUserId());
-        } else if ($this->adminView->isPromotePost()) {
-            $this->database->promoteUser($this->adminView->getUserId());
-        } else if ($this->adminView->isDemotePost()) {
-            $this->database->demoteUser($this->adminView->getUserId());
-        } else if ($this->adminView->isBanPost()) {
-            $this->database->banUser($this->adminView->getUserId());
-        } else if ($this->adminView->isUnbanPost()) {
-            $this->database->unbanUser($this->adminView->getUserId());
+        } else {
+            $this->adminOptions();
         }
         $this->ifBeenRedirected();
 
         $this->layoutView->render($this->loginView, $this->userSession->grabTemporaryMessage());
+    }
+
+    private function adminOptions()
+    {
+        try {
+            if ($this->adminView->isDeletePost()) {
+                $this->database->deleteUser($this->adminView->getUserId()); //TODO: Add feedback/status message on actions and avoid too many else if to read clearly
+            } else if ($this->adminView->isPromotePost()) {
+                $this->database->promoteUser($this->adminView->getUserId());
+            } else if ($this->adminView->isDemotePost()) {
+                $this->database->demoteUser($this->adminView->getUserId());
+            } else if ($this->adminView->isBanPost()) {
+                $this->database->banUser($this->adminView->getUserId());
+            } else if ($this->adminView->isUnbanPost()) {
+                $this->database->unbanUser($this->adminView->getUserId());
+            }
+        } catch (Exception $ex) {
+            $this->userSession->setTemporaryMessage($ex->getMessage());
+        }
     }
 
     private function loginUser($username, $password)
@@ -53,7 +64,7 @@ class LoginController extends Controller
             $tryUser->setPermission($this->database->getUserRole($username));
             $this->userSession->sessionLogin($tryUser);
         } catch (Exception $ex) {
-            $this->userSession->setStatusMessage($ex->getMessage());
+            $this->userSession->setTemporaryMessage($ex->getMessage());
         }
     }
 

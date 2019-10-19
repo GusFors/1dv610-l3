@@ -2,11 +2,13 @@
 
 require_once('Controller.php');
 
+//TODO Namespaces
+
 class MainController extends Controller
 {
     private $loginController;
     private $registerController;
-   
+
     public function __construct(LoginController $loginController, RegisterController $registerController)
     {
         $this->loginController = $loginController;

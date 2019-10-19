@@ -91,13 +91,12 @@ class UserSession
     public function getStoredUsername(): string
     {
         if (isset($_SESSION[self::$STORED_NAME])) {
-            //return strip_tags($_SESSION['storedname']);
             return $_SESSION[self::$STORED_NAME];
         }
         return '';
     }
 
-    public function setStatusMessage($message)
+    public function setTemporaryMessage($message)
     {
         if (isset($_SESSION[self::$STORED_MESSAGE]) == false) {
             $_SESSION[self::$STORED_MESSAGE] = '';
@@ -107,22 +106,22 @@ class UserSession
 
     public function setWelcomeMessage()
     {
-        $this->setStatusMessage('Welcome');
+        $this->setTemporaryMessage('Welcome');
     }
 
     public function setRememberMessage()
     {
-        $this->setStatusMessage('Welcome and you will be remembered');
+        $this->setTemporaryMessage('Welcome and you will be remembered');
     }
 
     public function setByeMessage()
     {
-        $this->setStatusMessage('Bye bye!');
+        $this->setTemporaryMessage('Bye bye!');
     }
 
     public function setRegisterMessage()
     {
-        $this->setStatusMessage('Registered new user.');
+        $this->setTemporaryMessage('Registered new user.');
     }
 
     public function grabTemporaryMessage(): string

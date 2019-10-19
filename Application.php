@@ -35,8 +35,7 @@ class Application
         $this->dateTimeView = new DateTimeView($this->date);
         $this->registerView = new RegisterView($this->userSession);
         $this->layoutView = new Layoutview($this->dateTimeView, $this->userSession);
-
-        $this->loginController = new LoginController($this->loginView, $this->userSession, $this->layoutView, $this->database, $this->adminView); // TODO; Not so many arguments
+        $this->loginController = new LoginController($this->loginView, $this->userSession, $this->layoutView, $this->database, $this->adminView); // TODO; Not having so many dependency injections in one function
         $this->registerController = new RegisterController($this->registerView, $this->userSession, $this->layoutView, $this->database, $this->loginView);
         $this->mainController = new MainController($this->loginController, $this->registerController, $this->userSession, $this->layoutView);
     }

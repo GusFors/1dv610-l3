@@ -1,6 +1,6 @@
 <?php
 
-class AdminView // göra moderatorview som adminview extendar med en egen view där promote finns?
+class AdminView
 {
     private $userSession;
     private $database;
@@ -27,8 +27,6 @@ class AdminView // göra moderatorview som adminview extendar med en egen view d
             <br>
                ' . $this->generateModOrAdminOptions() . '
             </form>';
-
-        //$response .= $this->generateLogoutButtonHTML($message);
         return $view;
     }
 
@@ -102,9 +100,7 @@ class AdminView // göra moderatorview som adminview extendar med en egen view d
                         <th>Id</th>
                         <th>Role</th>
                     </tr>
-                    
                         ' . $this->generaterUserTable() . '
-                   
                 </table>
                  ';
 

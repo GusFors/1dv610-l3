@@ -1,10 +1,12 @@
 <?php
 
 class Date
-{
+{   
+    private static $standardTimeZone = 'Europe/Stockholm';
+
     public function __construct()
     {
-        $this->setTimeZone('Europe/Stockholm');
+        $this->setTimeZone(self::$standardTimeZone);
     }
 
     public function getWeekDay(): string

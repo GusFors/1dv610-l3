@@ -1,6 +1,6 @@
 <?php
 
-//TODO add common functionality between controllers
+//TODO add common functionality/members between controllers
 
 abstract class Controller
 {

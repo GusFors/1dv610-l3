@@ -1,6 +1,6 @@
 <?php
 
-require_once('Controller.php'); //TODO Namespace
+require_once('Controller.php');
 
 class RegisterController extends Controller
 {
@@ -26,7 +26,6 @@ class RegisterController extends Controller
 
     public function doRegisterView()
     {
-        $this->userSession->setRegisterPage();
         $this->userSession->setCurrentPage(Controller::REGISTER_PAGE);
         $successRedirect = false;
 
@@ -40,7 +39,7 @@ class RegisterController extends Controller
                     $successRedirect = true;
                 }
             } catch (Exception $ex) {
-                $this->userSession->setStatusMessage($ex->getMessage());
+                $this->userSession->setTemporaryMessage($ex->getMessage());
             }
         }
 
@@ -48,7 +47,7 @@ class RegisterController extends Controller
 
         if ($successRedirect) {
             $this->registrationRedirect();
-         } else {
+        } else {
             $this->layoutView->render($this->registerView, $this->userSession->grabTemporaryMessage());
         }
     }

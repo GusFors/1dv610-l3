@@ -17,7 +17,8 @@ class UserDatabase
     private static $USER_TABLE = 'siteusers';
     private static $USER_ROLE = 'role';
 
-    public function __construct() {
+    public function __construct()
+    {
         if (count(parse_url(getenv(self::$DB_URL))) > 1) {
             $url = parse_url(getenv(self::$DB_URL));
 
@@ -30,7 +31,29 @@ class UserDatabase
         }
     }
 
-    public function isDbConnected(): bool {
+    public function getUsers()
+    {
+        $sql = "SELECT * FROM  " . self::$USER_TABLE . "  ";
+        $result = mysqli_query($this->dbConnection, $sql);
+        if($result == false) {
+            throw new InvalidMatchException('Could find/get the users.');
+        }
+        return $result;
+    }
+
+    public function getUserRole($username)
+    {
+        $sql = "SELECT " . self::$USER_ROLE . " FROM  " . self::$USER_TABLE . "  WHERE BINARY username = '$username'";
+        $result = mysqli_query($this->dbConnection, $sql);
+        if($result == false) {
+            throw new InvalidMatchException('Could not get selected user.');
+        }
+        $row = $result->fetch_assoc();
+        return ($row[self::$USER_ROLE]);
+    }
+
+    public function isDbConnected(): bool
+    { // flytta ngt liknande till konstruktor?
         if ($this->dbConnection) {
             return true;
         } else {
@@ -38,7 +61,8 @@ class UserDatabase
         }
     }
 
-    public function matchLoginUser($username, $password): bool {
+    public function matchLoginUser($username, $password): bool
+    {
         $sql = "SELECT id FROM " . self::$USER_TABLE . " WHERE BINARY username = '$username' AND BINARY password = '$password'";
 
         $result = mysqli_query($this->dbConnection, $sql);
@@ -52,46 +76,40 @@ class UserDatabase
         }
     }
 
-    //TODO: add exceptions for non successful attempts/results
-    public function deleteUser($id) {
+    //TODO: add exceptions for non successful attempts/results with effected rows function
+    public function deleteUser($id)
+    {
         $sql = "DELETE FROM  " . self::$USER_TABLE . "  WHERE  " . self::$USER_TABLE . " .`id` = $id";
         $result = mysqli_query($this->dbConnection, $sql);
+       
     }
 
-    public function promoteUser($id) {
+    public function promoteUser($id)
+    {
         $sql = "UPDATE  " . self::$USER_TABLE . "  SET  " . self::$USER_ROLE . "  = 'Moderator' WHERE  " . self::$USER_TABLE . " .`id` = $id";
         $result = mysqli_query($this->dbConnection, $sql);
     }
 
-    public function demoteUser($id) {
+    public function demoteUser($id)
+    {
         $sql = "UPDATE  " . self::$USER_TABLE . "  SET " . self::$USER_ROLE . " = 'User' WHERE  " . self::$USER_TABLE . " .`id` = $id";
         $result = mysqli_query($this->dbConnection, $sql);
     }
 
-    public function banUser($id) {
+    public function banUser($id)
+    {
         $sql = "UPDATE  " . self::$USER_TABLE . "  SET " . self::$USER_ROLE . " = 'Ban' WHERE  " . self::$USER_TABLE . " .`id` = $id";
         $result = mysqli_query($this->dbConnection, $sql);
     }
 
-    public function unbanUser($id) {
+    public function unbanUser($id)
+    {
         $sql = "UPDATE  " . self::$USER_TABLE . "  SET " . self::$USER_ROLE . " = 'User' WHERE  " . self::$USER_TABLE . " .`id` = $id";
         $result = mysqli_query($this->dbConnection, $sql);
     }
 
-    public function getUsers() {
-        $sql = "SELECT * FROM  " . self::$USER_TABLE . "  ";
-        $result = mysqli_query($this->dbConnection, $sql);
-        return $result;
-    }
-
-    public function getUserRole($username) {
-        $sql = "SELECT " . self::$USER_ROLE . " FROM  " . self::$USER_TABLE . "  WHERE BINARY username = '$username'";
-        $result = mysqli_query($this->dbConnection, $sql);
-        $row = $result->fetch_assoc();
-        return ($row[self::$USER_ROLE]);
-    }
-
-    private function createUserTable() {
+    private function createUserTable()
+    {
         $sql = "CREATE TABLE IF NOT EXISTS  " . self::$USER_TABLE . "  (
             id int(10) AUTO_INCREMENT,
             username varchar(20) NOT NULL,
@@ -104,9 +122,9 @@ class UserDatabase
         $result = mysqli_query($this->dbConnection, $sql);
     }
 
-
     //TODO: make function smaller and avoid the ifs, especially for adding <br>
-    private function validateUserRegistration($username, $password, $passwordRepeat) {
+    private function validateUserRegistration($username, $password, $passwordRepeat)
+    {
         $errorMessage = '';
         $isError = false;
 
@@ -152,7 +170,9 @@ class UserDatabase
         }
     }
 
-    public function isUserTaken($username) : bool {
+    // Checks if a given username is taken
+    public function isUserTaken($username): bool
+    {
         $sql = "SELECT id FROM  " . self::$USER_TABLE . "  WHERE BINARY username = '$username' ";
 
         $result = mysqli_query($this->dbConnection, $sql);
@@ -166,7 +186,8 @@ class UserDatabase
         }
     }
 
-    public function registerUser($username, $password, $passwordRepeat) {
+    public function registerUser($username, $password, $passwordRepeat)
+    {
         $this->isDbConnected();
         $this->validateUserRegistration($username, $password, $passwordRepeat);
         $sql = "INSERT INTO  " . self::$USER_TABLE . "  (username, password, " . self::$USER_ROLE . ") VALUES ('$username', '$password', 'User')";
@@ -174,7 +195,8 @@ class UserDatabase
         return $result;
     }
 
-    private function deleteTable() {
+    private function deleteTable()
+    {
         $sql = "DROP TABLE  " . self::$USER_TABLE . " ";
         $result = mysqli_query($this->dbConnection, $sql);
     }
