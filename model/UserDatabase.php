@@ -19,6 +19,11 @@ class UserDatabase
 
     public function __construct()
     {
+        $this->connectToDb();
+    }
+
+    private function connectToDb()
+    {
         if (count(parse_url(getenv(self::$DB_URL))) > 1) {
             $url = parse_url(getenv(self::$DB_URL));
             $server = $url[self::$HOST_URL];
@@ -27,15 +32,18 @@ class UserDatabase
             $db = substr($url[self::$PATH_URL], 1);
 
             $this->dbConnection = mysqli_connect($server, $dbusername, $dbpassword, $db);
+        } else {
+            throw new DbConnectionException('Could not connect to the database.');
         }
     }
+
 
     public function getUsers()
     {
         $sql = "SELECT * FROM  " . self::$USER_TABLE . "  ";
         $result = mysqli_query($this->dbConnection, $sql);
 
-        if($result == false) {
+        if ($result == false) {
             throw new InvalidMatchException('Could find/get the users.');
         }
         return $result;
@@ -46,7 +54,7 @@ class UserDatabase
         $sql = "SELECT " . self::$USER_ROLE . " FROM  " . self::$USER_TABLE . "  WHERE BINARY username = '$username'";
         $result = mysqli_query($this->dbConnection, $sql);
 
-        if($result == false) {
+        if ($result == false) {
             throw new InvalidMatchException('Could not get selected user.');
         }
         $row = $result->fetch_assoc();
@@ -81,7 +89,6 @@ class UserDatabase
     {
         $sql = "DELETE FROM  " . self::$USER_TABLE . "  WHERE  " . self::$USER_TABLE . " .`id` = $id";
         $result = mysqli_query($this->dbConnection, $sql);
-       
     }
 
     public function promoteUser($id)
