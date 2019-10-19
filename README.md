@@ -10,7 +10,7 @@ It currently fulfills 81% of the requirements from: [Test cases](https://github.
 The not implemented requirements are the ones related to cookie/hijacking, Test cases 3.3 - 3.8.
 The app does not currently give text feedback when modifying/deleting users as admin/moderator.
 
-To test the applications functionality, see the test cases below in this readme and go to the apps [url](https://gusfors-l3.herokuapp.com/index.php?).
+To test the applications functionality, see the test cases below in this readme and go to the [deployed version](https://gusfors-l3.herokuapp.com/index.php?).
 
 If you would rather test it locally follow these steps:
 
