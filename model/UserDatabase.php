@@ -32,8 +32,6 @@ class UserDatabase
             $db = substr($url[self::$PATH_URL], 1);
 
             $this->dbConnection = mysqli_connect($server, $dbusername, $dbpassword, $db);
-        } else {
-            throw new DbConnectionException('Could not connect to the database.');
         }
     }
 
@@ -103,7 +101,7 @@ class UserDatabase
         }
     }
 
-    //TODO: add exceptions for non successful attempts/results with effected rows function
+    //TODO: add exceptions for all functions with non successful attempts/results with effected rows function
     public function registerUser($username, $password, $passwordRepeat)
     {
         $this->isDbConnected();
@@ -111,6 +109,7 @@ class UserDatabase
 
         $sql = "INSERT INTO  " . self::$USER_TABLE . "  (username, password, " . self::$USER_ROLE . ") VALUES ('$username', '$password', 'User')";
         $result = mysqli_query($this->dbConnection, $sql);
+        return $result;
     }
 
     public function deleteUser($id)
