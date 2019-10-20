@@ -29,7 +29,7 @@ class Application
 
     public function __construct()
     {
-        // TODO; Not having so many dependency injections in one function
+        // TODO; Not having so many dependency injections/arguments in one function
         $this->userSession = new UserSession();
         $this->database = new UserDatabase();
         $this->adminView = new AdminView($this->userSession, $this->database);

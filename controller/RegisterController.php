@@ -19,11 +19,6 @@ class RegisterController extends Controller
         $this->loginView = $lv;
     }
 
-    public function isRegisterPage()
-    {
-        return $this->registerView->isRegisterGet();
-    }
-
     public function doRegisterView()
     {
         $this->userSession->setCurrentPage(Controller::REGISTER_PAGE);
@@ -50,6 +45,11 @@ class RegisterController extends Controller
         } else {
             $this->layoutView->render($this->registerView, $this->userSession->grabTemporaryMessage());
         }
+    }
+
+    public function isRegisterPage()
+    {
+        return $this->registerView->isRegisterGet();
     }
 
     private function registrationRedirect()

@@ -35,7 +35,6 @@ class UserDatabase
         }
     }
 
-
     public function getUsers(): mysqli_result
     {
         $sql = "SELECT * FROM  " . self::$USER_TABLE . "  ";
@@ -142,7 +141,8 @@ class UserDatabase
         $result = mysqli_query($this->dbConnection, $sql);
     }
 
-    //TODO: make function smaller and avoid the ifs, especially for adding <br or move user registration validation to an own class much like "LoginUser">
+    //TODO: make function smaller and avoid the ifs, especially for adding <br
+    // or move user registration validation to an own class much like "LoginUser">
     private function validateUserRegistration($username, $password, $passwordRepeat)
     {
         $errorMessage = '';

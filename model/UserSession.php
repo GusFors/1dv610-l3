@@ -120,17 +120,4 @@ class UserSession
         return $this->currentPage;
     }
 
-    public function setRegisterPage()
-    {
-        $_SESSION[self::$REGISTER_PAGE] = true;
-    }
-
-    public function isRegister(): bool
-    {
-        if (isset($_SESSION[self::$REGISTER_PAGE])) {
-            return $_SESSION[self::$REGISTER_PAGE];
-        } else {
-            return false;
-        }
-    }
 }
