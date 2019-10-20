@@ -175,7 +175,7 @@ UC1. 3b User provides authenticated admin credentials.
 ### Test case 7.1 promote a user 
 
 #### Input
- * Test case 1.7.1
+ * Test case 1.7.1 (admin credentials)
  * Enter an id from the user table in the input field
  * Press the promote button  
 
