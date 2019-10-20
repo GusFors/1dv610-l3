@@ -134,6 +134,18 @@ UC1. 3b User provides authenticated admin credentials.
  * A table containing registered users should be displayed with a header containing the text "Moderator options"
  along with an inputfield with ban/unban and delete options.
 
+ <br>
+
+ ### Test case 1.7.3 Successful login denial with banned credentials
+
+#### Input
+ * Enter username "banuser" and password "banned"
+ * Press login
+
+ #### Output
+ * A table containing registered users should be displayed with a header containing the text "Moderator options"
+ along with an inputfield with ban/unban and delete options.
+
 <br>
 
 ### Test case 5.1 delete a registered user 
