@@ -24,13 +24,13 @@ class UserDatabase
 
     private function connectToDb()
     {
-            $url = parse_url(getenv(self::$DB_URL));
-            $server = $url[self::$HOST_URL];
-            $dbusername = $url[self::$USER_URL];
-            $dbpassword = $url[self::$PASSWORD_URL];
-            $db = substr($url[self::$PATH_URL], 1);
+        $url = parse_url(getenv(self::$DB_URL));
+        $server = $url[self::$HOST_URL];
+        $dbusername = $url[self::$USER_URL];
+        $dbpassword = $url[self::$PASSWORD_URL];
+        $db = substr($url[self::$PATH_URL], 1);
 
-            $this->dbConnection = mysqli_connect($server, $dbusername, $dbpassword, $db);
+        $this->dbConnection = mysqli_connect($server, $dbusername, $dbpassword, $db);
     }
 
     public function getUsers(): mysqli_result
