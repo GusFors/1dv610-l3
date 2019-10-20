@@ -33,8 +33,8 @@ $db = YOUR_DB_NAME_HERE;
 
 $this->dbConnection = mysqli_connect($server, $dbusername, $dbpassword, $db);
 ```
-(It is recommended to load these variables from either a gitignored class file or your local environment variables).
-* Go to localhost/YOUR_FOLDER_IN_HTDOCS.php
+(It is recommended to load these variables from either a gitignored file or your local environment variables).
+* Go to localhost/YOUR_FOLDER_IN_HTDOCS.php in your browser of choice.
 
 <br>
 
