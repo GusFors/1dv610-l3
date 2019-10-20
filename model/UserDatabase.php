@@ -24,23 +24,13 @@ class UserDatabase
 
     private function connectToDb()
     {
-        if (count(parse_url(getenv(self::$DB_URL))) > 1) {
-            $url = parse_url(getenv(self::$DB_URL));
-            $server = $url[self::$HOST_URL];
-            $dbusername = $url[self::$USER_URL];
-            $dbpassword = $url[self::$PASSWORD_URL];
-            $db = substr($url[self::$PATH_URL], 1);
+        $url = parse_url(getenv(self::$DB_URL));
+        $server = $url[self::$HOST_URL];
+        $dbusername = $url[self::$USER_URL];
+        $dbpassword = $url[self::$PASSWORD_URL];
+        $db = substr($url[self::$PATH_URL], 1);
 
-            $this->dbConnection = mysqli_connect($server, $dbusername, $dbpassword, $db);
-        } else { // local db connection, dont throw error here
-            $localServer = 'localhost';
-            $dbUsername = 'root';
-            $dbPass = '';
-            $dbName = 'phplogin';
-            $this->dbConnection = mysqli_connect($localServer, $dbUsername, $dbPass, $dbName);
-            //$this->createUserTable();
-
-        }
+        $this->dbConnection = mysqli_connect($server, $dbusername, $dbpassword, $db);
     }
 
     public function getUsers(): mysqli_result
