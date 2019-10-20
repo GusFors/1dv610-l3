@@ -143,8 +143,8 @@ UC1. 3b User provides authenticated admin credentials.
  * Press login
 
  #### Output
- * A table containing registered users should be displayed with a header containing the text "Moderator options"
- along with an inputfield with ban/unban and delete options.
+ * The text "Not logged in", should still displayed.
+ * Error Feedback "You are currently banned" is shown 
 
 <br>
 
